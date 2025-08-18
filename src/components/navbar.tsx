@@ -36,7 +36,7 @@ export const Navbar = () => {
           href="/"
         >
           <Logo />
-          <p className="font-bold text-inherit">SIATA</p>
+          <p className="font-bold text-inherit">{siteConfig.name}</p>
         </Link>
       </NavbarBrand>
       {isAuth && (

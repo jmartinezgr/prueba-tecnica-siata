@@ -1,6 +1,7 @@
 import { IconCloud } from "@tabler/icons-react";
 
 import { AuthInfoPanelProps } from "@/types/auth";
+import { siteConfig } from "@/config/site";
 
 const AuthInfoPanel = ({ title, subtitle, descList }: AuthInfoPanelProps) => {
   return (
@@ -13,7 +14,7 @@ const AuthInfoPanel = ({ title, subtitle, descList }: AuthInfoPanelProps) => {
               <IconCloud />
             </div>
             <div>
-              <h1 className="text-3xl font-bold">SIMET</h1>
+              <h1 className="text-3xl font-bold">{siteConfig.name}</h1>
               <p className="text-slate-200">
                 Sistema de Información Meteorológica
               </p>
