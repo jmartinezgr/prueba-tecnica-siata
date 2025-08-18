@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router";
 
-import { routesMap } from "./RouteMap";
+import { routesMap } from "@/config/site";
+import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 
 const AppRoutes = () => {
   return (
@@ -8,7 +9,11 @@ const AppRoutes = () => {
       {routesMap.map((route) => (
         <Route
           key={route.pathName}
-          element={route.component}
+          element={
+            <ProtectedRoute isProtected={route.isProtected}>
+              {<route.component />}
+            </ProtectedRoute>
+          }
           path={route.pathName}
         />
       ))}

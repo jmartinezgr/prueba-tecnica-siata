@@ -1,5 +1,7 @@
+import { ComponentType } from "react";
+
 export type RouteComponent = {
   pathName: string;
-  component: React.ReactNode;
-  isProtected?: boolean;
+  component: ComponentType<any>;
+  isProtected: boolean;
 };
