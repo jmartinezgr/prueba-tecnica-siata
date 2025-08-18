@@ -78,16 +78,13 @@ export const Navbar = () => {
         ) : (
           <>
             <NavbarItem className="hidden lg:flex">
-              <Link href="#">Iniciar Sesión</Link>
+              <Button className="hidden lg:flex" color="primary" variant="flat">
+                <Link href="/login">Iniciar Sesión</Link>
+              </Button>
             </NavbarItem>
             <NavbarItem>
-              <Button
-                className="hidden lg:flex"
-                color="primary"
-                href="#"
-                variant="flat"
-              >
-                Registrarse
+              <Button className="hidden lg:flex" color="primary" variant="flat">
+                <Link href="/register">Registrarse</Link>
               </Button>
             </NavbarItem>
           </>

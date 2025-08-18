@@ -1,12 +1,10 @@
-import { Route, Routes } from "react-router-dom";
-
-import IndexPage from "@/pages/index";
+import AppRoutes from "./routes/AppRoutes";
 
 function App() {
   return (
-    <Routes>
-      <Route element={<IndexPage />} path="/" />
-    </Routes>
+    <>
+      <AppRoutes />
+    </>
   );
 }
 
