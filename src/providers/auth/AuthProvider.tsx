@@ -19,7 +19,7 @@ type AuthContextType = {
   updateUser: (data: Partial<UserType>) => void;
 };
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthenticationProvider: React.FC<IAuthContextProps> = ({
   children,
