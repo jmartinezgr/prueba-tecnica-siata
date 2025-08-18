@@ -3,6 +3,7 @@ export type SiteConfig = typeof siteConfig;
 import IndexPage from "@/pages";
 import HomePage from "@/pages/Home";
 import LoginPage from "@/pages/Login";
+import NotFoundPage from "@/pages/NotFound";
 import RegisterPage from "@/pages/Register";
 import { RouteComponent } from "@/types/routes";
 
@@ -50,6 +51,16 @@ export const routesMap: RouteComponent[] = [
     pathName: "/home",
     isProtected: true,
     component: HomePage,
+  },
+  {
+    pathName: "/not-found",
+    isProtected: false,
+    component: NotFoundPage,
+  },
+  {
+    pathName: "*",
+    isProtected: false,
+    component: NotFoundPage,
   },
 ];
 
