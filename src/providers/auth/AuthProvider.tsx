@@ -39,8 +39,6 @@ export const AuthenticationProvider: React.FC<IAuthContextProps> = ({
 
         dispatch({ type: "LOGIN", payload: data });
 
-        // Solo redirigir si estamos en una página de auth
-
         if (pathname === "/login" || pathname === "/register") {
           navigate("/home");
         }
@@ -62,7 +60,6 @@ export const AuthenticationProvider: React.FC<IAuthContextProps> = ({
     mutationFn: (loginCredentials: { email: string; password: string }) =>
       login(loginCredentials.email, loginCredentials.password),
     onSuccess: () => {
-      //dispatch({ type: "LOGIN" });
       userInfoQuery.refetch();
     },
   });

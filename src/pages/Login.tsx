@@ -10,6 +10,7 @@ import {
 import AuthInfoPanel from "@/components/auth/AuthInfoPanel";
 import { AuthInfoPanelListItem } from "@/types/auth";
 import AuthFormSection from "@/components/auth/AuthFormSection";
+import { useAuth } from "@/hooks/useAuth";
 
 const authInfoPanelItems: AuthInfoPanelListItem[] = [
   {
@@ -25,6 +26,7 @@ const authInfoPanelItems: AuthInfoPanelListItem[] = [
 ];
 
 const LoginPage = () => {
+  const { login } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -32,9 +34,14 @@ const LoginPage = () => {
 
   const handleLogin = async () => {
     setIsLoading(true);
-    setTimeout(() => {
+
+    try {
+      await login({ email, password });
+    } catch (error) {
+      console.log("Error during login:", error);
+    } finally {
       setIsLoading(false);
-    }, 1000);
+    }
   };
 
   return (
