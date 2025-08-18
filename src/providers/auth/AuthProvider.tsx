@@ -13,6 +13,7 @@ interface IAuthContextProps {
 
 type AuthContextType = {
   user: UserType | null;
+  isAuth: boolean;
   dispatch: React.Dispatch<any>;
   login: (user: { email: string; password: string }) => void;
   register: (user: UserType) => void;
@@ -88,6 +89,7 @@ export const AuthenticationProvider: React.FC<IAuthContextProps> = ({
     <AuthContext.Provider
       value={{
         user: state.user,
+        isAuth: state.isLogged,
         dispatch,
         login: loginMutation.mutate,
         register: registerMutation.mutate,

@@ -3,7 +3,7 @@ import { UserType } from "@/types/auth";
 type AuthState = {
   user: UserType | null;
   loading: boolean;
-  isLogged?: boolean;
+  isLogged: boolean;
 };
 
 type AuthAction =
@@ -16,6 +16,7 @@ type AuthAction =
 export const initialAuthState: AuthState = {
   user: null,
   loading: false,
+  isLogged: false,
 };
 
 export function authReducer(state: AuthState, action: AuthAction): AuthState {

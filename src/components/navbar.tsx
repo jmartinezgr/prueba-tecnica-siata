@@ -16,14 +16,14 @@ import {
   Avatar,
   Button,
 } from "@heroui/react";
-import { useState } from "react";
 
 import { siteConfig } from "@/config/site";
 import { Logo } from "@/components/icons";
+import { useAuth } from "@/hooks/useAuth";
 
 //TODO: Modificar la logica para los estados globales reales y links reales
 export const Navbar = () => {
-  const [isAuth] = useState(false);
+  const { user, isAuth, logout } = useAuth();
 
   return (
     <HeroUINavbar maxWidth="2xl" position="sticky">
@@ -68,9 +68,9 @@ export const Navbar = () => {
             <DropdownMenu aria-label="Profile Actions" variant="flat">
               <DropdownItem key="profile" className="h-14 gap-2">
                 <p className="font-semibold">Sesion iniciada con</p>
-                <p className="font-semibold">zoey@example.com</p>
+                <p className="font-semibold">{user?.email}</p>
               </DropdownItem>
-              <DropdownItem key="logout" color="danger">
+              <DropdownItem key="logout" color="danger" onPress={logout}>
                 Cerrar Sesión
               </DropdownItem>
             </DropdownMenu>
@@ -111,7 +111,7 @@ export const Navbar = () => {
               <hr className="my-2 border-gray-300" />
               <div className="flex flex-col gap-1">
                 <p className="text-sm font-semibold">Signed in as</p>
-                <p className="text-sm text-default-500">zoey@example.com</p>
+                <p className="text-sm text-default-500">{user?.email}</p>
                 <Button className="mt-2 w-fit" color="danger" variant="flat">
                   Cerrar Sesión
                 </Button>
