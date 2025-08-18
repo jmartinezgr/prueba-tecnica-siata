@@ -9,3 +9,9 @@ export type AuthInfoPanelListItem = {
   description: string;
   icon: React.ReactNode;
 };
+
+export type AuthFormSectionProps = {
+  title: string;
+  subtitle: string;
+  children: React.ReactNode;
+};

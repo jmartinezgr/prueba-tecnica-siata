@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Card, CardBody, Input, Button, Link, Divider } from "@heroui/react";
+import { Input, Button, Link, Divider } from "@heroui/react";
 import {
   IconEye,
   IconEyeOff,
@@ -9,6 +9,7 @@ import {
 
 import AuthInfoPanel from "@/components/auth/AuthInfoPanel";
 import { AuthInfoPanelListItem } from "@/types/auth";
+import AuthFormSection from "@/components/auth/AuthFormSection";
 
 const authInfoPanelItems: AuthInfoPanelListItem[] = [
   {
@@ -23,7 +24,7 @@ const authInfoPanelItems: AuthInfoPanelListItem[] = [
   },
 ];
 
-const Login = () => {
+const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -38,144 +39,107 @@ const Login = () => {
 
   return (
     <div className="min-h-screen flex bg-slate-50">
-      {/* Panel Izquierdo - Formulario de Login */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-8">
-        <div className="w-full max-w-md">
-          {/* Card del Formulario */}
-          <Card className="shadow-lg border border-slate-200">
-            <CardBody className="p-6">
-              <div className="text-center mb-6">
-                <h2 className="text-2xl font-semibold text-slate-800 mb-2">
-                  Acceso al Sistema
-                </h2>
-                <p className="text-slate-600 text-sm">
-                  Ingrese sus credenciales para acceder
-                </p>
-              </div>
+      <AuthFormSection
+        subtitle="Ingrese sus credenciales para acceder"
+        title="Acceso al Sistema"
+      >
+        {/* Campo Email */}
+        <Input
+          isRequired
+          classNames={{
+            input: "text-base",
+            inputWrapper:
+              "border-slate-300 data-[hover=true]:border-slate-500 group-data-[focus=true]:border-slate-600",
+          }}
+          label="Correo"
+          placeholder="example@gmail.com"
+          size="md"
+          type="email"
+          value={email}
+          variant="bordered"
+          onValueChange={setEmail}
+        />
 
-              <div className="space-y-6">
-                {/* Campo Email */}
-                <Input
-                  isRequired
-                  classNames={{
-                    input: "text-base",
-                    inputWrapper:
-                      "border-slate-300 data-[hover=true]:border-slate-500 group-data-[focus=true]:border-slate-600",
-                  }}
-                  label="Correo"
-                  placeholder="example@gmail.com"
-                  size="md"
-                  type="email"
-                  value={email}
-                  variant="bordered"
-                  onValueChange={setEmail}
-                />
+        {/* Checkbox y Links */}
+        <div className="space-y-3">
+          {/* Campo Contraseña */}
+          <Input
+            isRequired
+            classNames={{
+              input: "text-base",
+              inputWrapper:
+                "border-slate-300 data-[hover=true]:border-slate-500 group-data-[focus=true]:border-slate-600",
+            }}
+            endContent={
+              <button
+                aria-label={
+                  isPasswordVisible
+                    ? "Ocultar contraseña"
+                    : "Mostrar contraseña"
+                }
+                className="focus:outline-none text-slate-400 hover:text-slate-600"
+                type="button"
+                onClick={() => setIsPasswordVisible(!isPasswordVisible)}
+              >
+                {isPasswordVisible ? <IconEye /> : <IconEyeOff />}
+              </button>
+            }
+            label="Contraseña"
+            placeholder="Ingrese su contraseña"
+            size="md"
+            type={isPasswordVisible ? "text" : "password"}
+            value={password}
+            variant="bordered"
+            onValueChange={setPassword}
+          />
+          <Link
+            className="text-slate-600 hover:text-slate-800 block"
+            href="/forgot-password"
+            size="sm"
+          >
+            ¿Olvidó su contraseña?
+          </Link>
+        </div>
 
-                {/* Checkbox y Links */}
-                <div className="space-y-3">
-                  {/* Campo Contraseña */}
-                  <Input
-                    isRequired
-                    classNames={{
-                      input: "text-base",
-                      inputWrapper:
-                        "border-slate-300 data-[hover=true]:border-slate-500 group-data-[focus=true]:border-slate-600",
-                    }}
-                    endContent={
-                      <button
-                        aria-label={
-                          isPasswordVisible
-                            ? "Ocultar contraseña"
-                            : "Mostrar contraseña"
-                        }
-                        className="focus:outline-none text-slate-400 hover:text-slate-600"
-                        type="button"
-                        onClick={() => setIsPasswordVisible(!isPasswordVisible)}
-                      >
-                        {isPasswordVisible ? <IconEye /> : <IconEyeOff />}
-                      </button>
-                    }
-                    label="Contraseña"
-                    placeholder="Ingrese su contraseña"
-                    size="md"
-                    type={isPasswordVisible ? "text" : "password"}
-                    value={password}
-                    variant="bordered"
-                    onValueChange={setPassword}
-                  />
-                  <Link
-                    className="text-slate-600 hover:text-slate-800 block"
-                    href="/forgot-password"
-                    size="sm"
-                  >
-                    ¿Olvidó su contraseña?
-                  </Link>
-                </div>
+        {/* Botón de Login */}
+        <div className="text-center">
+          <Button
+            className="w-full bg-slate-800 text-white hover:bg-slate-700 font-semibold transition-colors duration-200 mb-3"
+            isLoading={isLoading}
+            size="lg"
+            startContent={!isLoading && <IconShieldCheck />}
+            onPress={handleLogin}
+          >
+            {isLoading ? "Verificando credenciales..." : "Acceder al Sistema"}
+          </Button>
+          <span className="text-slate-600 text-sm">
+            ¿No tienes una cuenta?{" "}
+          </span>
+          <Link
+            className="text-slate-800 hover:text-slate-600 font-medium text-sm"
+            href="/register"
+          >
+            Crea Una
+          </Link>
+        </div>
 
-                {/* Botón de Login */}
-                <div className="text-center">
-                  <Button
-                    className="w-full bg-slate-800 text-white hover:bg-slate-700 font-semibold transition-colors duration-200 mb-3"
-                    isLoading={isLoading}
-                    size="lg"
-                    startContent={!isLoading && <IconShieldCheck />}
-                    onPress={handleLogin}
-                  >
-                    {isLoading
-                      ? "Verificando credenciales..."
-                      : "Acceder al Sistema"}
-                  </Button>
-                  <span className="text-slate-600 text-sm">
-                    ¿No tienes una cuenta?{" "}
-                  </span>
-                  <Link
-                    className="text-slate-800 hover:text-slate-600 font-medium text-sm"
-                    href="/register"
-                  >
-                    Crea Una
-                  </Link>
-                </div>
+        <Divider className="my-3" />
 
-                <Divider className="my-3" />
-
-                {/* Información de Seguridad */}
-                <div className="bg-slate-100 p-4 rounded-lg">
-                  <div className="flex items-start space-x-2">
-                    <IconShieldCheck />
-                    <div className="text-xs text-slate-600">
-                      <p className="font-medium mb-1">Acceso Seguro</p>
-                      <p>
-                        Este sistema está protegido y monitoreado. El acceso no
-                        autorizado está prohibido.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </CardBody>
-          </Card>
-
-          {/* Footer  */}
-          <div className="mt-6 text-center space-y-2">
-            <p className="text-xs text-slate-500">
-              © 2025 Valle de Aburra - Secretaría del Medio Ambiente
-            </p>
-            <div className="flex justify-center space-x-4 text-xs">
-              <Link className="text-slate-500 hover:text-slate-700" href="#">
-                Política de Datos
-              </Link>
-              <span className="text-slate-300">•</span>
-              <Link className="text-slate-500 hover:text-slate-700" href="#">
-                Soporte Técnico
-              </Link>
-              <span className="text-slate-300">•</span>
-              <Link className="text-slate-500 hover:text-slate-700" href="#">
-                Manual de Usuario
-              </Link>
+        {/* Información de Seguridad */}
+        <div className="bg-slate-100 p-4 rounded-lg">
+          <div className="flex items-start space-x-2">
+            <IconShieldCheck />
+            <div className="text-xs text-slate-600">
+              <p className="font-medium mb-1">Acceso Seguro</p>
+              <p>
+                Este sistema está protegido y monitoreado. El acceso no
+                autorizado está prohibido.
+              </p>
             </div>
           </div>
         </div>
-      </div>
+      </AuthFormSection>
+
       {/** Panel de Información */}
       <AuthInfoPanel
         descList={authInfoPanelItems}
@@ -186,4 +150,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginPage;
