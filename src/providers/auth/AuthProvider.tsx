@@ -3,7 +3,7 @@ import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
 
 import { authReducer, initialAuthState } from "@/providers/auth/AuthReducer";
 import { UserType } from "@/types/auth";
-import { getCurrentUser, login, logout } from "@/services/auth";
+import { getCurrentUser, login, logout, register } from "@/services/auth";
 
 interface IAuthContextProps {
   children: React.ReactNode;
@@ -15,6 +15,7 @@ type AuthContextType = {
   user: UserType | null;
   dispatch: React.Dispatch<any>;
   login: (user: { email: string; password: string }) => void;
+  register: (user: UserType) => void;
   logout: () => void;
   updateUser: (data: Partial<UserType>) => void;
 };
@@ -75,6 +76,13 @@ export const AuthenticationProvider: React.FC<IAuthContextProps> = ({
     },
   });
 
+  const registerMutation = useMutation({
+    mutationFn: (registerData: UserType) => register(registerData),
+    onSuccess: () => {
+      userInfoQuery.refetch();
+    },
+  });
+
   const updateUser = (data: Partial<UserType>) => {
     dispatch({ type: "UPDATE", payload: data });
   };
@@ -85,6 +93,7 @@ export const AuthenticationProvider: React.FC<IAuthContextProps> = ({
         user: state.user,
         dispatch,
         login: loginMutation.mutate,
+        register: registerMutation.mutate,
         logout: logoutMutation.mutate,
         updateUser,
       }}
