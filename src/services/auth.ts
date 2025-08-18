@@ -38,6 +38,7 @@ export async function register(user: UserType) {
 
   users[user.email] = user;
   saveUsers(users);
+  localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
 
   return user;
 }

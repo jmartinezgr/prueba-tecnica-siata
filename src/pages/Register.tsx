@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { useState } from "react";
 import { Input, Button, Checkbox, Link, Divider } from "@heroui/react";
 import { Key } from "@react-types/shared";
@@ -11,7 +12,8 @@ import {
 
 import AuthInfoPanel from "@/components/auth/AuthInfoPanel";
 import AuthFormSection from "@/components/auth/AuthFormSection";
-import { AuthInfoPanelListItem } from "@/types/auth";
+import { AuthInfoPanelListItem, UserType } from "@/types/auth";
+import { useAuth } from "@/hooks/useAuth";
 
 const authInfoPanelItems: AuthInfoPanelListItem[] = [
   {
@@ -27,15 +29,12 @@ const authInfoPanelItems: AuthInfoPanelListItem[] = [
 ];
 
 const RegisterPage = () => {
-  const [formData, setFormData] = useState({
+  const { register } = useAuth();
+  const [formData, setFormData] = useState<UserType>({
     firstName: "",
     lastName: "",
     email: "",
-    phone: "",
-    department: "",
-    position: "",
     password: "",
-    confirmPassword: "",
   });
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState(false);
@@ -48,9 +47,20 @@ const RegisterPage = () => {
 
   const handleRegister = async () => {
     setIsLoading(true);
-    setTimeout(() => {
+
+    try {
+      console.log("Registering user:", formData);
+      if (acceptTerms && acceptPrivacy) {
+        await register(formData);
+      } else {
+        //TODO: Show error message
+        console.log("Terms and conditions must be accepted");
+      }
+    } catch (error) {
+      console.log("Error during registration:", error);
+    } finally {
       setIsLoading(false);
-    }, 2000);
+    }
   };
 
   return (

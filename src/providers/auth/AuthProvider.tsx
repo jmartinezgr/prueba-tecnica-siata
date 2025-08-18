@@ -71,7 +71,7 @@ export const AuthenticationProvider: React.FC<IAuthContextProps> = ({
     mutationFn: logout,
     onSuccess: () => {
       dispatch({ type: "LOGOUT" });
-      //navigate(siteConfig.AUTH_PATHS.LOGIN);
+      navigate("/");
       queryClient.resetQueries();
     },
   });
