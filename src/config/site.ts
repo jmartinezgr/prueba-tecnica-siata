@@ -1,11 +1,11 @@
 export type SiteConfig = typeof siteConfig;
 
 import IndexPage from "@/pages";
-import HomePage from "@/pages/Home";
 import LoginPage from "@/pages/Login";
 import NotFoundPage from "@/pages/NotFound";
 import RegisterPage from "@/pages/Register";
 import { RouteComponent } from "@/types/routes";
+import StationsPage from "@/pages/Stations";
 
 export const siteConfig = {
   name: "SIMET",
@@ -13,7 +13,7 @@ export const siteConfig = {
   privateNavItems: [
     {
       label: "Estaciones",
-      href: "/estaciones",
+      href: "/stations",
     },
     {
       label: "Perfil",
@@ -48,9 +48,9 @@ export const routesMap: RouteComponent[] = [
     component: IndexPage,
   },
   {
-    pathName: "/home",
+    pathName: "/stations",
     isProtected: true,
-    component: HomePage,
+    component: StationsPage,
   },
   {
     pathName: "/not-found",
