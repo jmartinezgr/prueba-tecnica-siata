@@ -6,6 +6,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import { AuthenticationProvider } from "./auth/AuthProvider";
 
+import { AuthGuard } from "@/routes/AuthGuard";
+
 declare module "@react-types/shared" {
   interface RouterConfig {
     routerOptions: NavigateOptions;
@@ -21,9 +23,11 @@ export function Provider({ children }: { children: React.ReactNode }) {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthenticationProvider navigate={navigate} pathname={pathname}>
-        <HeroUIProvider navigate={navigate} useHref={useHref}>
-          {children}
-        </HeroUIProvider>
+        <AuthGuard navigate={navigate} pathname={pathname}>
+          <HeroUIProvider navigate={navigate} useHref={useHref}>
+            {children}
+          </HeroUIProvider>
+        </AuthGuard>
       </AuthenticationProvider>
     </QueryClientProvider>
   );
