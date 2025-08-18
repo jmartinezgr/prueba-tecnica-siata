@@ -16,6 +16,7 @@ import {
   Avatar,
   Button,
 } from "@heroui/react";
+import { useNavigate } from "react-router-dom";
 
 import { siteConfig } from "@/config/site";
 import { Logo } from "@/components/icons";
@@ -24,6 +25,7 @@ import { useAuth } from "@/hooks/useAuth";
 //TODO: Modificar la logica para los estados globales reales y links reales
 export const Navbar = () => {
   const { user, isAuth, logout } = useAuth();
+  const navigate = useNavigate();
 
   return (
     <HeroUINavbar maxWidth="2xl" position="sticky">
@@ -58,7 +60,7 @@ export const Navbar = () => {
               <Avatar
                 isBordered
                 as="button"
-                className="transition-transform"
+                className="transition-transform hidden sm:block"
                 color="secondary"
                 name="Jason Hughes"
                 size="sm"
@@ -78,13 +80,23 @@ export const Navbar = () => {
         ) : (
           <>
             <NavbarItem className="hidden lg:flex">
-              <Button className="hidden lg:flex" color="primary" variant="flat">
-                <Link href="/login">Iniciar Sesión</Link>
+              <Button
+                className="hidden lg:flex"
+                color="primary"
+                variant="flat"
+                onPress={() => navigate("/login")}
+              >
+                Iniciar Sesión
               </Button>
             </NavbarItem>
             <NavbarItem>
-              <Button className="hidden lg:flex" color="primary" variant="flat">
-                <Link href="/register">Registrarse</Link>
+              <Button
+                className="hidden lg:flex"
+                color="primary"
+                variant="bordered"
+                onPress={() => navigate("/register")}
+              >
+                Registrarse
               </Button>
             </NavbarItem>
           </>
@@ -112,27 +124,20 @@ export const Navbar = () => {
               <div className="flex flex-col gap-1">
                 <p className="text-sm font-semibold">Signed in as</p>
                 <p className="text-sm text-default-500">{user?.email}</p>
-                <Button className="mt-2 w-fit" color="danger" variant="flat">
-                  Cerrar Sesión
-                </Button>
               </div>
             </>
           )}
           {isAuth ? (
-            <NavbarMenuItem>
-              <Link color="foreground" href="" size="lg">
-                Cerrar Sesión
-              </Link>
-            </NavbarMenuItem>
+            <NavbarMenuItem onClick={logout}>Cerrar Sesión</NavbarMenuItem>
           ) : (
             <>
               <NavbarMenuItem>
-                <Link color="foreground" href="" size="lg">
+                <Link color="foreground" href="/login" size="lg">
                   Iniciar Sesión
                 </Link>
               </NavbarMenuItem>
               <NavbarMenuItem>
-                <Link color="foreground" href="" size="lg">
+                <Link color="foreground" href="/register" size="lg">
                   Registrarse
                 </Link>
               </NavbarMenuItem>
