@@ -1,12 +1,27 @@
 import { useState } from "react";
 import { Card, CardBody, Input, Button, Link, Divider } from "@heroui/react";
 import {
-  IconCloud,
   IconEye,
   IconEyeOff,
   IconShieldCheck,
   IconTemperatureSnow,
 } from "@tabler/icons-react";
+
+import AuthInfoPanel from "@/components/auth/AuthInfoPanel";
+import { AuthInfoPanelListItem } from "@/types/auth";
+
+const authInfoPanelItems: AuthInfoPanelListItem[] = [
+  {
+    title: "Protección de Datos",
+    description: "Sus datos están seguros con nosotros.",
+    icon: <IconShieldCheck />,
+  },
+  {
+    title: "Clima Frío",
+    description: "Prepárese para el clima frío.",
+    icon: <IconTemperatureSnow />,
+  },
+];
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -161,71 +176,12 @@ const Login = () => {
           </div>
         </div>
       </div>
-
-      {/* Panel Derecho - Información del Sistema */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-slate-600 via-slate-700 to-slate-800 relative overflow-hidden">
-        {/* Contenido Principal */}
-        <div className="relative z-10 p-12 text-white flex flex-col justify-center">
-          <div className="flex items-center mb-6">
-            <div className="bg-white/20 p-3 rounded-lg mr-4">
-              <IconCloud />
-            </div>
-            <div>
-              <h1 className="text-3xl font-bold">SIMET</h1>
-              <p className="text-slate-200">
-                Sistema de Información Meteorológica
-              </p>
-            </div>
-          </div>
-          <div className="mb-8">
-            <h2 className="text-4xl font-bold mb-4">Inicio de Sesion</h2>
-            <p className="text-xl opacity-90 mb-6">
-              Plataforma oficial para el monitoreo y análisis de datos
-              climáticos
-            </p>
-          </div>
-
-          {/* Características del Sistema */}
-          <div className="space-y-6">
-            <div className="flex items-start space-x-4">
-              <div className="bg-white/20 p-2 rounded">
-                <IconTemperatureSnow />
-              </div>
-              <div>
-                <h3 className="font-semibold text-lg">
-                  Monitoreo en Tiempo Real
-                </h3>
-                <p className="text-slate-200">
-                  Datos meteorológicos actualizados cada 5 minutos desde 150+
-                  estaciones
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start space-x-4">
-              <div className="bg-white/20 p-2 rounded">
-                <IconShieldCheck />
-              </div>
-              <div>
-                <h3 className="font-semibold text-lg">Información Oficial</h3>
-                <p className="text-slate-200">
-                  Datos certificados para toma de decisiones gubernamentales
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Información de Contacto */}
-          <div className="mt-12 p-6 bg-white/10 backdrop-blur-sm rounded-lg">
-            <h4 className="font-semibold mb-3">Soporte Técnico</h4>
-            <div className="text-sm text-slate-200 space-y-1">
-              <p>📧 soporte.simet@antioquia.gov.co</p>
-              <p>📞 (604) 385-5555 Ext. 1234</p>
-              <p>🕒 Lunes a Viernes: 8:00 AM - 5:00 PM</p>
-            </div>
-          </div>
-        </div>
-      </div>
+      {/** Panel de Información */}
+      <AuthInfoPanel
+        descList={authInfoPanelItems}
+        subtitle="Plataforma oficial para el monitoreo y análisis de datos climáticos"
+        title="Inicio de Sesion"
+      />
     </div>
   );
 };
