@@ -2,8 +2,8 @@ import { UserType } from "@/types/auth";
 
 type AuthState = {
   user: UserType | null;
-  loading: boolean;
   isLogged: boolean;
+  isAppLoaded: boolean;
 };
 
 type AuthAction =
@@ -11,28 +11,46 @@ type AuthAction =
   | { type: "REGISTER"; payload: UserType }
   | { type: "LOGOUT" }
   | { type: "UPDATE"; payload: Partial<UserType> }
-  | { type: "SET_LOADING"; payload: boolean };
+  | { type: "SET_APPLOADED" };
 
 export const initialAuthState: AuthState = {
   user: null,
-  loading: false,
   isLogged: false,
+  isAppLoaded: false,
 };
 
 export function authReducer(state: AuthState, action: AuthAction): AuthState {
   switch (action.type) {
     case "LOGIN":
-      return { ...state, user: action.payload, loading: false, isLogged: true };
+      return {
+        ...state,
+        user: action.payload,
+        isLogged: true,
+        isAppLoaded: true,
+      };
     case "LOGOUT":
-      return { ...state, user: null, loading: false, isLogged: false };
+      return {
+        ...state,
+        user: null,
+        isLogged: false,
+        isAppLoaded: true,
+      };
     case "REGISTER":
-      return { ...state, user: action.payload, loading: false, isLogged: true };
+      return {
+        ...state,
+        user: action.payload,
+        isLogged: true,
+        isAppLoaded: true,
+      };
+    case "SET_APPLOADED":
+      return {
+        ...state,
+        isAppLoaded: true,
+      };
     case "UPDATE":
       return state.user
         ? { ...state, user: { ...state.user, ...action.payload } }
         : state;
-    case "SET_LOADING":
-      return { ...state, loading: action.payload };
     default:
       return state;
   }

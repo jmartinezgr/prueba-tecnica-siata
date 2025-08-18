@@ -14,6 +14,7 @@ interface IAuthContextProps {
 type AuthContextType = {
   user: UserType | null;
   isAuth: boolean;
+  isAppLoaded: boolean;
   dispatch: React.Dispatch<any>;
   login: (user: { email: string; password: string }) => void;
   register: (user: UserType) => void;
@@ -46,10 +47,11 @@ export const AuthenticationProvider: React.FC<IAuthContextProps> = ({
 
         return data ?? null;
       } catch {
-        dispatch({ type: "LOGOUT" });
-        navigate("/");
+        if (state.user !== null) dispatch({ type: "LOGOUT" });
 
         return null;
+      } finally {
+        dispatch({ type: "SET_APPLOADED" });
       }
     },
     retry: false,
@@ -90,6 +92,7 @@ export const AuthenticationProvider: React.FC<IAuthContextProps> = ({
       value={{
         user: state.user,
         isAuth: state.isLogged,
+        isAppLoaded: state.isAppLoaded,
         dispatch,
         login: loginMutation.mutate,
         register: registerMutation.mutate,
