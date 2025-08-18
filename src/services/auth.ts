@@ -70,8 +70,13 @@ export async function logout() {
   return true;
 }
 
-export async function getCurrentUser(): Promise<UserType | null> {
+export async function getCurrentUser(): Promise<UserType> {
   const user = localStorage.getItem(CURRENT_USER_KEY);
 
-  return user ? JSON.parse(user) : null;
+  if (!user) {
+    throw new Error("No hay usuario logueado");
+  }
+
+  //TODO : usar try
+  return JSON.parse(user);
 }

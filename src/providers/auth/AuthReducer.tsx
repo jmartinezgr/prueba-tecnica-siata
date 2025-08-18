@@ -3,6 +3,7 @@ import { UserType } from "@/types/auth";
 type AuthState = {
   user: UserType | null;
   loading: boolean;
+  isLogged?: boolean;
 };
 
 type AuthAction =
@@ -20,11 +21,11 @@ export const initialAuthState: AuthState = {
 export function authReducer(state: AuthState, action: AuthAction): AuthState {
   switch (action.type) {
     case "LOGIN":
-      return { ...state, user: action.payload, loading: false };
+      return { ...state, user: action.payload, loading: false, isLogged: true };
     case "LOGOUT":
-      return { ...state, user: null, loading: false };
+      return { ...state, user: null, loading: false, isLogged: false };
     case "REGISTER":
-      return { ...state, user: action.payload, loading: false };
+      return { ...state, user: action.payload, loading: false, isLogged: true };
     case "UPDATE":
       return state.user
         ? { ...state, user: { ...state.user, ...action.payload } }
