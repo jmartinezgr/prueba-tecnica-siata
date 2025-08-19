@@ -244,8 +244,8 @@ export const Navbar = () => {
             <>
               <NavbarMenuItem>
                 <Link
-                  className="block w-full p-3 rounded-lg hover:bg-default-100 transition-colors font-medium"
-                  color="foreground"
+                  className="block w-full p-3 rounded-lg bg-primary/10 hover:bg-primary/20 transition-colors font-medium text-center"
+                  color="primary"
                   href="/login"
                   size="lg"
                 >

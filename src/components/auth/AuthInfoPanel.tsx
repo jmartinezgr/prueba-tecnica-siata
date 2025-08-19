@@ -1,4 +1,5 @@
 import { IconCloud } from "@tabler/icons-react";
+import { Link } from "react-router-dom";
 
 import { AuthInfoPanelProps } from "@/types/auth";
 import { siteConfig } from "@/config/site";
@@ -9,17 +10,19 @@ const AuthInfoPanel = ({ title, subtitle, descList }: AuthInfoPanelProps) => {
       <div className="relative z-10 p-12 text-white flex flex-col justify-center">
         {/* Titulos */}
         <div className="mb-8">
-          <div className="flex items-center mb-6">
-            <div className="bg-white/20 p-3 rounded-lg mr-4">
-              <IconCloud />
+          <Link to="/">
+            <div className="flex items-center mb-6">
+              <div className="bg-white/20 p-3 rounded-lg mr-4">
+                <IconCloud />
+              </div>
+              <div>
+                <h1 className="text-3xl font-bold">{siteConfig.name}</h1>
+                <p className="text-slate-200">
+                  Sistema de Información Meteorológica
+                </p>
+              </div>
             </div>
-            <div>
-              <h1 className="text-3xl font-bold">{siteConfig.name}</h1>
-              <p className="text-slate-200">
-                Sistema de Información Meteorológica
-              </p>
-            </div>
-          </div>
+          </Link>
 
           <h2 className="text-4xl font-bold mb-4">{title}</h2>
           <p className="text-xl opacity-90 mb-6">{subtitle}</p>
