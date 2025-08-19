@@ -53,6 +53,7 @@ const TableHeaderTools: React.FC<TableHeaderToolsProps> = ({
               const selected = Array.from(keys)[0] as string;
 
               setStatusFilter(selected || "all");
+              setPage(1);
             }}
           >
             <SelectItem key="all">Todos</SelectItem>

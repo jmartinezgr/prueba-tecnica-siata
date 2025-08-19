@@ -21,7 +21,13 @@ export function useStationsTable(stations: Station[]) {
       );
     }
     if (statusFilter !== "all") {
-      filtered = filtered.filter((s) => s.status === statusFilter);
+      if (statusFilter === "active") {
+        filtered = filtered.filter((s) => s.status === "active" || s.status);
+      } else if (statusFilter === "inactive") {
+        filtered = filtered.filter((s) => s.status === "inactive" || !s.status);
+      } else if (statusFilter === "maintenance") {
+        filtered = filtered.filter((s) => s.status === "maintenance");
+      }
     }
 
     return filtered;
