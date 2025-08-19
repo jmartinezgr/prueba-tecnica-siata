@@ -31,21 +31,18 @@ function saveUsers(users: Record<string, UserType>) {
 // ================== AUTH METHODS ==================
 
 export async function login(email: string, password: string) {
-  try {
-    const users = getUsers();
-    const user = users[email];
+  const users = getUsers();
+  const user = users[email];
 
-    if (!user || user.password !== password) {
-      throw new Error("Credenciales incorrectas");
-    }
-
-    localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
-
-    return user;
-  } catch {
-    throw new Error("No se pudo iniciar sesión. Intente nuevamente luego.");
+  if (!user || user.password !== password) {
+    throw new Error("Credenciales incorrectas");
   }
+
+  localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
+
+  return user;
 }
+
 export async function logout() {
   localStorage.removeItem(CURRENT_USER_KEY);
 }
@@ -65,21 +62,17 @@ export async function updateUser(user: UserType): Promise<UserType> {
 }
 
 export async function register(user: UserType) {
-  try {
-    const users = getUsers();
+  const users = getUsers();
 
-    if (users[user.email]) {
-      throw new Error("El usuario ya existe");
-    }
-
-    users[user.email] = user;
-    saveUsers(users);
-    localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
-
-    return user;
-  } catch {
-    throw new Error("No se pudo registrar el usuario. Intente nuevamente.");
+  if (users[user.email]) {
+    throw new Error("Correo ya usado");
   }
+
+  users[user.email] = user;
+  saveUsers(users);
+  localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
+
+  return user;
 }
 
 export async function getCurrentUser(): Promise<UserType> {

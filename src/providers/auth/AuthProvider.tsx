@@ -63,7 +63,7 @@ export const AuthenticationProvider: React.FC<IAuthContextProps> = ({
         dispatch({ type: "LOGIN", payload: data });
 
         if (pathname === "/login" || pathname === "/register") {
-          navigate("/home");
+          navigate("/stations");
         }
 
         return data ?? null;
