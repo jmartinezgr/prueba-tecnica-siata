@@ -3,24 +3,7 @@ import { useState, useCallback } from "react";
 import { addToast } from "@heroui/react";
 
 import { useAuth } from "@/hooks/useAuth";
-
-interface FormData {
-  firstName: string;
-  lastName: string;
-  email: string;
-  currentPassword: string;
-  newPassword: string;
-  confirmPassword: string;
-}
-
-interface FormErrors {
-  firstName?: string;
-  lastName?: string;
-  email?: string;
-  currentPassword?: string;
-  newPassword?: string;
-  confirmPassword?: string;
-}
+import { FormData, FormErrors } from "@/types/profile";
 
 export const useProfileForm = () => {
   const { user, updateUser, updateUserMutation } = useAuth();
@@ -184,13 +167,13 @@ export const useProfileForm = () => {
 
       if (error) {
         newErrors[field as keyof FormErrors] = error;
-        isValid = false;
+        isValid = false; // Aquí está la corrección - se mantiene como boolean
       }
     });
 
     setErrors(newErrors);
 
-    return isValid;
+    return isValid; // Retorna correctamente un boolean
   }, [formData, validateField]);
 
   const handleSubmit = useCallback(async () => {
@@ -266,18 +249,20 @@ export const useProfileForm = () => {
   }, [user]);
 
   // Computed values
-  const isPasswordSectionUsed =
-    formData.currentPassword ||
-    formData.newPassword ||
-    formData.confirmPassword;
-  const hasPersonalInfoChanges =
+  const isPasswordSectionUsed = Boolean(
+    formData.currentPassword || formData.newPassword || formData.confirmPassword
+  );
+  const hasPersonalInfoChanges = Boolean(
     formData.firstName !== user?.firstName ||
-    formData.lastName !== user?.lastName ||
-    formData.email !== user?.email;
-  const hasPasswordChanges = isPasswordSectionUsed && formData.newPassword;
-  const hasChanges = hasPersonalInfoChanges || hasPasswordChanges;
-  const hasErrors = Object.values(errors).some((error) => !!error);
-  const isFormValid = hasChanges && !hasErrors;
+      formData.lastName !== user?.lastName ||
+      formData.email !== user?.email
+  );
+  const hasPasswordChanges = Boolean(
+    isPasswordSectionUsed && formData.newPassword
+  );
+  const hasChanges = Boolean(hasPersonalInfoChanges || hasPasswordChanges);
+  const hasErrors = Object.values(errors).some((error) => Boolean(error));
+  const isFormValid = Boolean(hasChanges && !hasErrors);
 
   return {
     formData,
