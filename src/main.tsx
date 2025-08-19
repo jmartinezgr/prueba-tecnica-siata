@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
+// import { ThemeProvider } from "@heroui/react";
 
 import App from "./App.tsx";
 import { Provider } from "./providers/provider.tsx";
