@@ -83,7 +83,7 @@ export const Navbar = () => {
               <Button
                 className="hidden lg:flex"
                 color="primary"
-                variant="flat"
+                variant="bordered"
                 onPress={() => navigate("/login")}
               >
                 Iniciar Sesión

@@ -90,19 +90,13 @@ const LoginPage = () => {
             variant="bordered"
             onValueChange={setPassword}
           />
-          <Link
-            className="text-slate-600 hover:text-slate-800 block"
-            href="/forgot-password"
-            size="sm"
-          >
-            ¿Olvidó su contraseña?
-          </Link>
         </div>
 
         {/* Botón de Login */}
         <div className="text-center">
           <Button
-            className="w-full bg-slate-800 text-white hover:bg-slate-700 font-semibold transition-colors duration-200 mb-3"
+            className="w-full  font-semibold transition-colors mb-3"
+            color="primary"
             isLoading={loginMutation.isPending}
             size="lg"
             startContent={!loginMutation.isPending && <IconShieldCheck />}

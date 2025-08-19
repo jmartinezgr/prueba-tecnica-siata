@@ -205,7 +205,8 @@ const RegisterPage = () => {
 
         {/* Botón de Registro */}
         <Button
-          className="w-full bg-slate-800 text-white hover:bg-slate-700 font-semibold transition-colors duration-200"
+          className="w-full "
+          color="primary"
           isDisabled={!canSubmit}
           isLoading={isLoading}
           size="lg"

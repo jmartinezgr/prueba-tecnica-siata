@@ -5,7 +5,7 @@ import { siteConfig } from "@/config/site";
 
 const AuthInfoPanel = ({ title, subtitle, descList }: AuthInfoPanelProps) => {
   return (
-    <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-slate-600 via-slate-700 to-slate-800 relative overflow-hidden">
+    <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br  from-[#b249f8] via-[#d27cf9] to-[#FF1CF7]  relative overflow-hidden">
       <div className="relative z-10 p-12 text-white flex flex-col justify-center">
         {/* Titulos */}
         <div className="mb-8">
@@ -39,7 +39,7 @@ const AuthInfoPanel = ({ title, subtitle, descList }: AuthInfoPanelProps) => {
           ))}
         </div>
         {/* Información de Contacto */}
-        <div className="mt-12 p-6 bg-white/10 backdrop-blur-sm rounded-lg">
+        <div className="mt-12 p-6 bg-white/20 backdrop-blur-sm rounded-lg">
           <h4 className="font-semibold mb-3">Soporte Técnico</h4>
           <div className="text-sm text-slate-200 space-y-1">
             <p>📧 soporte.simet@antioquia.gov.co</p>

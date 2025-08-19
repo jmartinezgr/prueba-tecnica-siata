@@ -14,6 +14,7 @@ export const ProfileHeader = ({ userEmail }: ProfileHeaderProps) => {
           <Avatar
             isBordered
             className="ring-2 ring-primary-200"
+            color="primary"
             size="lg"
             src="https://i.pravatar.cc/150?img=44"
           />
