@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { addToast } from "@heroui/react";
 
 import { StationFormData } from "@/types/stations";
 import { fetchStationInfo } from "@/services/stations";
@@ -19,12 +20,25 @@ export const useStationModal = ({
   stationId,
   onSave,
   onUpdate,
+  onClose,
 }: UseStationModalProps) => {
   const [saving, setSaving] = useState<boolean>(false);
 
   const stationQuery = useQuery({
     queryKey: ["station", stationId],
-    queryFn: () => fetchStationInfo(stationId || ""),
+    queryFn: () =>
+      fetchStationInfo(stationId || "")
+        .then((data) => data)
+        .catch(() => {
+          addToast({
+            title: "Error",
+            description: `Ups! No se pudo encontrar la estación."`,
+            color: "danger",
+          });
+          onClose();
+
+          return undefined;
+        }),
     enabled: !!stationId,
   });
 

@@ -11,6 +11,7 @@ import {
 } from "@heroui/react";
 import { IconDeviceDesktop } from "@tabler/icons-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { AxiosError } from "axios";
 
 import { StationFormFields } from "./StationFormFields";
 
@@ -42,7 +43,6 @@ const StationModal: React.FC<StationModalProps> = ({
       onClose();
     },
     onError: (error) => {
-      console.log(error);
       addToast({
         title: "Error",
         description: `No se pudo crear la estación. ${error.message}`,
@@ -62,13 +62,20 @@ const StationModal: React.FC<StationModalProps> = ({
       queryClient.invalidateQueries({ queryKey: ["stations"] });
       onClose();
     },
-    onError: (error) => {
-      console.log(error);
-      addToast({
-        title: "Error",
-        description: `No se pudo crear la estación. ${error.message}`,
-        color: "danger",
-      });
+    onError: (error: AxiosError) => {
+      if (error.response?.status === 404) {
+        addToast({
+          title: "Error",
+          description: `No se pudo encontrar la estación."`,
+          color: "danger",
+        });
+      } else {
+        addToast({
+          title: "Error",
+          description: `Ocurrio un error editando la estación. Prueba más tarde"`,
+          color: "danger",
+        });
+      }
     },
   });
 
