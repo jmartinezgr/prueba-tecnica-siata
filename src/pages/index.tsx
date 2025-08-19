@@ -100,7 +100,7 @@ export default function IndexPage() {
           </h4>
           <div className="flex flex-wrap justify-center gap-1.5 sm:gap-2">
             <Chip className="text-xs" color="primary" size="sm" variant="flat">
-              Next.js
+              React Query
             </Chip>
             <Chip
               className="text-xs"
