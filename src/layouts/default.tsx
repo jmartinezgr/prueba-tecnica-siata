@@ -17,7 +17,7 @@ export default function DefaultLayout({
         <Link
           isExternal
           className="flex items-center gap-1 text-current"
-          href="https://github/jmartinezgr"
+          href="https://github.com/jmartinezgr"
           title="heroui.com homepage"
         >
           <span className="text-default-600">Powered by</span>
