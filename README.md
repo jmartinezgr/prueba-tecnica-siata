@@ -26,7 +26,7 @@ Esta aplicación frontend está desarrollada en React con TypeScript y presenta 
 - **Frontend Framework:** React 18 con TypeScript
 - **Ruteo:** React Router (App Router)
 - **Gestión de Estado:** Context API + useReducer
-- **Estilos:** Tailwind CSS + HeadlessUI
+- **Estilos:** Tailwind CSS + HeroUI
 - **Build Tool:** Vite
 - **Despliegue:** Vercel
 - **Persistencia:** Local Storage
@@ -161,7 +161,7 @@ El **AuthGuard** es el componente central que maneja toda la lógica de protecci
 - **Lógica predecible** para las actualizaciones de estado
 - **Menor bundle size** comparado con Redux u otras alternativas
 
-### ¿Por qué Tailwind CSS + HeadlessUI?
+### ¿Por qué Tailwind CSS + HeroUI?
 - **Desarrollo rápido** con clases utilitarias
 - **Consistencia** en el diseño
 - **Componentes accesibles** out-of-the-box
@@ -172,23 +172,24 @@ El **AuthGuard** es el componente central que maneja toda la lógica de protecci
 - **Persistencia** de sesión entre recargas
 - **No requiere backend** para el manejo de tokens
 
+### ¿Por qué paginacion en memoria y no usando los queryParams de la api ? 
+- La primer idea y las más adecuada es usar directamente los parametro de la api por temas de escalibilidad y validez de la información
+- MockApi no retornaba ni headers ni metadatos relacionados a la paginación y por la simplicidad del proyecto y el acabado a las utilidades que pretendia darle a la app
+
 ## 📸 Screenshots de la Aplicación
 
 ### Pantalla de Login
-![Login Screen](./screenshots/login.png)
-*Interfaz de autenticación con diseño moderno y validaciones*
+<img width="1919" height="908" alt="image" src="https://github.com/user-attachments/assets/046d7cc9-84d9-4b63-a5d8-28669063d51d" />
+<img width="1919" height="905" alt="image" src="https://github.com/user-attachments/assets/e45a86f1-2731-49fb-8db1-4a9cf73090b4" />
 
 ### Dashboard Principal
-![Dashboard](./screenshots/dashboard.png)
-*Vista principal con listado de estaciones meteorológicas*
+<img width="1919" height="908" alt="image" src="https://github.com/user-attachments/assets/5742f423-5f90-47e8-8fe0-54ca6935eaf3" />
 
 ### Detalle de Estación
-![Station Detail](./screenshots/station-detail.png)
-*Información detallada de cada estación climática*
+<img width="1919" height="907" alt="image" src="https://github.com/user-attachments/assets/be2cf7e0-5550-4f49-8308-a4bae556ea48" />
 
 ### Vista Móvil
-![Mobile View](./screenshots/mobile-view.png)
-*Interfaz responsiva optimizada para dispositivos móviles*
+<img width="445" height="794" alt="image" src="https://github.com/user-attachments/assets/806b794e-c469-4c00-a3ff-f1738750225c" />
 
 ## 🔧 Configuración de la Mock API
 
@@ -230,7 +231,7 @@ El build se genera en la carpeta `dist/` y está optimizado para producción con
 
 **Tu Nombre**
 - GitHub: [@tu-usuario](https://github.com/jmartinezgr)
-- LinkedIn: [Tu Perfil](https://linkedin.com/in/tu-perfil)
+- LinkedIn: [Tu Perfil](https://www.linkedin.com/in/juan-jose-martinez)
 - Email: josemargri3@gmail.com
 
 ---
