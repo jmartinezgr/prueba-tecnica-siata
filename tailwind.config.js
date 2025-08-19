@@ -12,7 +12,7 @@ export default {
   theme: {
     extend: {},
   },
-  darkMode: "class",
+  darkMode: false,
   plugins: [
     heroui({
       themes: {
