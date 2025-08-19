@@ -6,7 +6,7 @@ export function useStationsTable(stations: Station[]) {
   const [filterValue, setFilterValue] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [page, setPage] = useState(1);
-  const rowsPerPage = 10;
+  const [rowsPerPage, setRowsPerPage] = useState<number>(10);
 
   const filteredItems = useMemo(() => {
     let filtered = [...stations];
@@ -33,13 +33,17 @@ export function useStationsTable(stations: Station[]) {
     return filtered;
   }, [stations, filterValue, statusFilter]);
 
-  const pages = Math.ceil(filteredItems.length / rowsPerPage);
+  const pages = useMemo(() => {
+    if (filteredItems.length === 0) return 1;
+
+    return Math.ceil(filteredItems.length / rowsPerPage);
+  }, [filteredItems, rowsPerPage]);
 
   const items = useMemo(() => {
     const start = (page - 1) * rowsPerPage;
 
     return filteredItems.slice(start, start + rowsPerPage);
-  }, [page, filteredItems]);
+  }, [page, filteredItems, rowsPerPage]);
 
   return {
     filterValue,
@@ -51,5 +55,7 @@ export function useStationsTable(stations: Station[]) {
     pages,
     filteredItems,
     items,
+    rowsPerPage,
+    setRowsPerPage,
   };
 }

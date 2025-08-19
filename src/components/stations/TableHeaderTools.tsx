@@ -11,6 +11,8 @@ interface TableHeaderToolsProps {
   handleAdd: () => void;
   stationsCount: number;
   setPage: (page: number) => void;
+  setRowsPerPage: (rows: number) => void;
+  rowsPerPage: number;
 }
 
 const TableHeaderTools: React.FC<TableHeaderToolsProps> = ({
@@ -22,6 +24,8 @@ const TableHeaderTools: React.FC<TableHeaderToolsProps> = ({
   handleAdd,
   stationsCount,
   setPage,
+  setRowsPerPage,
+  rowsPerPage,
 }) => {
   return (
     <div className="flex flex-col gap-4">
@@ -87,7 +91,11 @@ const TableHeaderTools: React.FC<TableHeaderToolsProps> = ({
           <span className="sm:hidden">Mostrar:</span>
           <select
             className="bg-transparent outline-none text-default-400 text-xs sm:text-small ml-2 border border-default-200 rounded px-2 py-1"
-            onChange={() => setPage(1)}
+            value={rowsPerPage}
+            onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
+              setRowsPerPage(Number(event.target.value));
+              setPage(1);
+            }}
           >
             <option value="5">5</option>
             <option value="10">10</option>

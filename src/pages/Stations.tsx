@@ -97,6 +97,8 @@ const StationsPage = () => {
     pages,
     items,
     filteredItems,
+    setRowsPerPage,
+    rowsPerPage,
   } = useStationsTable(stations || []);
 
   // Función para manejar búsqueda
@@ -130,7 +132,9 @@ const StationsPage = () => {
       <TableHeaderTools
         filterValue={filterValue}
         handleAdd={handleAdd}
+        rowsPerPage={rowsPerPage}
         setPage={setPage}
+        setRowsPerPage={setRowsPerPage}
         setStatusFilter={setStatusFilter}
         stationsCount={stations.length}
         statusFilter={statusFilter}
