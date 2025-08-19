@@ -175,7 +175,10 @@ const StationsPage = () => {
                 <div>
                   <p className="text-small text-default-500">Activas</p>
                   <p className="text-2xl font-semibold text-success">
-                    {stations.filter((s) => s.status === "active").length}
+                    {
+                      stations.filter((s) => s.status === "active" || s.status)
+                        .length
+                    }
                   </p>
                 </div>
               </CardBody>
@@ -189,7 +192,11 @@ const StationsPage = () => {
                 <div>
                   <p className="text-small text-default-500">Inactivas</p>
                   <p className="text-2xl font-semibold text-danger">
-                    {stations.filter((s) => s.status === "inactive").length}
+                    {
+                      stations.filter(
+                        (s) => s.status === "inactive" || !s.status
+                      ).length
+                    }
                   </p>
                 </div>
               </CardBody>
