@@ -2,16 +2,16 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
-import { Station, StationFormData } from "@/types/stations";
+import { StationFormData } from "@/types/stations";
 import { fetchStationInfo } from "@/services/stations";
 
 interface UseStationModalProps {
   stationId?: string | null;
   onSave?: (stationData: StationFormData) => Promise<unknown>; // antes Promise<void>
-  onUpdate?: (
-    stationId: string,
-    stationData: Partial<Station>
-  ) => Promise<unknown>; // igual aquí
+  onUpdate?: (stationData: {
+    stationId: string;
+    formData: StationFormData;
+  }) => Promise<unknown>; // igual aquí
   onClose: () => void;
 }
 
@@ -36,7 +36,7 @@ export const useStationModal = ({
 
     setSaving(true);
     if (stationId && onUpdate) {
-      await onUpdate(stationId, formData);
+      await onUpdate({ stationId, formData });
     } else if (onSave) {
       await onSave(formData);
     }

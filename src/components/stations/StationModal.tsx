@@ -10,14 +10,14 @@ import {
   addToast,
 } from "@heroui/react";
 import { IconDeviceDesktop } from "@tabler/icons-react";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { StationFormFields } from "./StationFormFields";
 
 import { useStationForm } from "@/hooks/stations/useStationForm";
 import { useStationModal } from "@/hooks/stations/useStationModal";
 import { useStatusHandler } from "@/hooks/stations/useStatusHandler";
-import { createStation } from "@/services/stations";
+import { createStation, updateStation } from "@/services/stations";
 
 interface StationModalProps {
   isOpen: boolean;
@@ -30,6 +30,7 @@ const StationModal: React.FC<StationModalProps> = ({
   onClose,
   stationId = null,
 }) => {
+  const queryClient = useQueryClient();
   const createMutation = useMutation({
     mutationFn: createStation,
     onSuccess: () => {
@@ -50,10 +51,32 @@ const StationModal: React.FC<StationModalProps> = ({
     },
   });
 
+  const updateMutation = useMutation({
+    mutationFn: updateStation,
+    onSuccess: () => {
+      addToast({
+        title: "Éxito",
+        description: `Estación creada correctamente.`,
+        color: "success",
+      });
+      queryClient.invalidateQueries({ queryKey: ["stations"] });
+      onClose();
+    },
+    onError: (error) => {
+      console.log(error);
+      addToast({
+        title: "Error",
+        description: `No se pudo crear la estación. ${error.message}`,
+        color: "danger",
+      });
+    },
+  });
+
   const { saving, stationQuery, handleSave } = useStationModal({
     stationId,
     onClose,
     onSave: createMutation.mutateAsync,
+    onUpdate: updateMutation.mutateAsync,
   });
 
   const { formData, errors, handleInputChange, validateForm, resetForm } =

@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import api from "@/services";
 import { Station, StationFormData } from "@/types/stations";
 
@@ -17,6 +18,18 @@ export const createStation = async (
   formData: StationFormData
 ): Promise<Station> => {
   const response = await api.post("/", formData);
+
+  return response.data;
+};
+
+export const updateStation = async ({
+  stationId,
+  formData,
+}: {
+  stationId: string;
+  formData: StationFormData;
+}): Promise<Station> => {
+  const response = await api.put(`/${stationId}`, formData);
 
   return response.data;
 };

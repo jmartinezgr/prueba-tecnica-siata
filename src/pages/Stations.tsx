@@ -36,11 +36,19 @@ import StationModal from "@/components/stations/StationModal";
 // Tipos para TypeScript
 
 const StationsPage = () => {
-  const [stations, setStations] = useState<Station[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [selectedStationId, setSelectedStationId] = useState<string | null>(
     null
   );
+
+  const { data: stations = [] } = useQuery({
+    queryKey: ["stations"],
+    queryFn: () =>
+      fetchStations().then((data) => {
+        return data;
+      }),
+    refetchOnWindowFocus: true,
+  });
 
   const handleModalClose = () => {
     setIsModalOpen(false);
@@ -57,18 +65,7 @@ const StationsPage = () => {
     pages,
     items,
     filteredItems,
-  } = useStationsTable(stations);
-
-  useQuery({
-    queryKey: ["stations"],
-    queryFn: () =>
-      fetchStations().then((data) => {
-        setStations(data);
-
-        return data;
-      }),
-    refetchOnWindowFocus: true,
-  });
+  } = useStationsTable(stations || []);
 
   // Función para manejar búsqueda
   const onSearchChange = (value?: string) => {
