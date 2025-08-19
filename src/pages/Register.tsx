@@ -1,7 +1,6 @@
 /* eslint-disable no-console */
 import { useState } from "react";
 import { Input, Button, Checkbox, Link, Divider } from "@heroui/react";
-import { Key } from "@react-types/shared";
 import {
   IconUserPlus,
   IconShieldCheck,
@@ -12,8 +11,9 @@ import {
 
 import AuthInfoPanel from "@/components/auth/AuthInfoPanel";
 import AuthFormSection from "@/components/auth/AuthFormSection";
-import { AuthInfoPanelListItem, UserType } from "@/types/auth";
+import { AuthInfoPanelListItem } from "@/types/auth";
 import { useAuth } from "@/hooks/useAuth";
+import { useRegisterForm } from "@/hooks/register/useRegisterForm";
 
 const authInfoPanelItems: AuthInfoPanelListItem[] = [
   {
@@ -30,38 +30,51 @@ const authInfoPanelItems: AuthInfoPanelListItem[] = [
 
 const RegisterPage = () => {
   const { register } = useAuth();
-  const [formData, setFormData] = useState<UserType>({
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-  });
+  const {
+    formData,
+    errors,
+    touched,
+    isFormValid,
+    handleInputChange,
+    handleBlur,
+    validateAllFields,
+    resetForm,
+  } = useRegisterForm();
+
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [acceptPrivacy, setAcceptPrivacy] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleInputChange = (field: string, value: Key) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
-  };
-
   const handleRegister = async () => {
+    if (!validateAllFields()) {
+      console.log("Form validation failed");
+
+      return;
+    }
+
+    if (!acceptTerms || !acceptPrivacy) {
+      console.log("Terms and conditions must be accepted");
+
+      return;
+    }
+
     setIsLoading(true);
 
     try {
       console.log("Registering user:", formData);
-      if (acceptTerms && acceptPrivacy) {
-        await register(formData);
-      } else {
-        //TODO: Show error message
-        console.log("Terms and conditions must be accepted");
-      }
+      await register(formData);
+      resetForm();
+      setAcceptTerms(false);
+      setAcceptPrivacy(false);
     } catch (error) {
       console.log("Error during registration:", error);
     } finally {
       setIsLoading(false);
     }
   };
+
+  const canSubmit = isFormValid && acceptTerms && acceptPrivacy;
 
   return (
     <div className="min-h-screen flex bg-slate-50">
@@ -83,11 +96,14 @@ const RegisterPage = () => {
               inputWrapper:
                 "border-slate-300 data-[hover=true]:border-slate-500",
             }}
+            errorMessage={touched.firstName && errors.firstName}
+            isInvalid={Boolean(touched.firstName && errors.firstName)}
             label="Nombres"
             placeholder="Juan Carlos"
             size="md"
             value={formData.firstName}
             variant="bordered"
+            onBlur={() => handleBlur("firstName")}
             onValueChange={(value) => handleInputChange("firstName", value)}
           />
           <Input
@@ -96,11 +112,14 @@ const RegisterPage = () => {
               inputWrapper:
                 "border-slate-300 data-[hover=true]:border-slate-500",
             }}
+            errorMessage={touched.lastName && errors.lastName}
+            isInvalid={Boolean(touched.lastName && errors.lastName)}
             label="Apellidos"
             placeholder="García López"
             size="md"
             value={formData.lastName}
             variant="bordered"
+            onBlur={() => handleBlur("lastName")}
             onValueChange={(value) => handleInputChange("lastName", value)}
           />
         </div>
@@ -111,12 +130,15 @@ const RegisterPage = () => {
           classNames={{
             inputWrapper: "border-slate-300 data-[hover=true]:border-slate-500",
           }}
+          errorMessage={touched.email && errors.email}
+          isInvalid={Boolean(touched.email && errors.email)}
           label="Correo"
           placeholder="example@gmail.com"
           size="md"
           type="email"
           value={formData.email}
           variant="bordered"
+          onBlur={() => handleBlur("email")}
           onValueChange={(value) => handleInputChange("email", value)}
         />
 
@@ -126,6 +148,7 @@ const RegisterPage = () => {
           classNames={{
             inputWrapper: "border-slate-300 data-[hover=true]:border-slate-500",
           }}
+          description="Mínimo 8 caracteres con mayúscula, minúscula y número"
           endContent={
             <button
               className="text-slate-400 hover:text-slate-600"
@@ -135,12 +158,15 @@ const RegisterPage = () => {
               {isPasswordVisible ? <IconEye /> : <IconEyeOff />}
             </button>
           }
+          errorMessage={touched.password && errors.password}
+          isInvalid={Boolean(touched.password && errors.password)}
           label="Contraseña"
           placeholder="Mínimo 8 caracteres"
           size="md"
           type={isPasswordVisible ? "text" : "password"}
           value={formData.password}
           variant="bordered"
+          onBlur={() => handleBlur("password")}
           onValueChange={(value) => handleInputChange("password", value)}
         />
 
@@ -180,7 +206,7 @@ const RegisterPage = () => {
         {/* Botón de Registro */}
         <Button
           className="w-full bg-slate-800 text-white hover:bg-slate-700 font-semibold transition-colors duration-200"
-          isDisabled={!acceptTerms || !acceptPrivacy}
+          isDisabled={!canSubmit}
           isLoading={isLoading}
           size="lg"
           startContent={!isLoading && <IconUserPlus />}
