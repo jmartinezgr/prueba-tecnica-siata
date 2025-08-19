@@ -13,8 +13,9 @@ import { IconDeviceDesktop } from "@tabler/icons-react";
 
 import { StationFormFields } from "./StationFormFields";
 
-import { useStationForm } from "@/hooks/useStationForm";
-import { useStationModal, useStatusHandler } from "@/hooks/useStationModal";
+import { useStationForm } from "@/hooks/stations/useStationForm";
+import { useStationModal } from "@/hooks/stations/useStationModal";
+import { useStatusHandler } from "@/hooks/stations/useStatusHandler";
 import { Station } from "@/types/stations";
 
 type StationFormData = Omit<Station, "id">;
@@ -62,10 +63,7 @@ const StationModal: React.FC<StationModalProps> = ({
   const onSaveClick = () => handleSave(formData, validateForm);
 
   const onStatusChange = (value: string) => {
-    handleStatusChange(
-      value,
-      handleInputChange as (field: string, value: any) => void
-    );
+    handleStatusChange(value, handleInputChange);
   };
 
   return (
@@ -95,9 +93,7 @@ const StationModal: React.FC<StationModalProps> = ({
               formData={formData}
               getStatusValue={getStatusValue}
               stationId={stationId}
-              onInputChange={
-                handleInputChange as (field: string, value: any) => void
-              }
+              onInputChange={handleInputChange}
               onStatusChange={onStatusChange}
             />
           )}

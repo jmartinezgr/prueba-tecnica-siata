@@ -8,6 +8,8 @@ import {
   IconTemperature,
 } from "@tabler/icons-react";
 
+import { onChangeStationFormDataFunct } from "@/types/stations";
+
 const statusOptions = [
   { key: "active", label: "Activa" },
   { key: "inactive", label: "Inactiva" },
@@ -18,7 +20,7 @@ interface StationFormFieldsProps {
   formData: any;
   errors: any;
   stationId?: string | null;
-  onInputChange: (field: string, value: any) => void;
+  onInputChange: onChangeStationFormDataFunct;
   getStatusValue: (status: any) => string;
   onStatusChange: (value: string) => void;
 }

@@ -9,3 +9,11 @@ export interface Station {
   last_answer: string;
   temp: number;
 }
+
+export type StationFormData = Omit<Station, "id">;
+
+export type onChangeStationFormDataFunct = (
+  field: keyof StationFormData,
+  // eslint-disable-next-line prettier/prettier
+  value: string | number | boolean
+) => void;

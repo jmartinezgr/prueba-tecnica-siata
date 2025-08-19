@@ -1,10 +1,9 @@
+/* eslint-disable prettier/prettier */
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
-import { Station } from "@/types/stations";
+import { Station, StationFormData } from "@/types/stations";
 import { fetchStationInfo } from "@/services/stations";
-
-type StationFormData = Omit<Station, "id">;
 
 interface UseStationModalProps {
   stationId?: string | null;
@@ -55,28 +54,5 @@ export const useStationModal = ({
     saving,
     stationQuery,
     handleSave,
-  };
-};
-
-// hooks/useStatusHandler.ts
-export const useStatusHandler = () => {
-  const getStatusValue = (status: string | boolean): string => {
-    if (typeof status === "boolean") {
-      return status ? "active" : "inactive";
-    }
-
-    return status;
-  };
-
-  const handleStatusChange = (
-    value: string,
-    onChange: (field: string, value: any) => void
-  ): void => {
-    onChange("status", value as "active" | "inactive" | "maintenance");
-  };
-
-  return {
-    getStatusValue,
-    handleStatusChange,
   };
 };

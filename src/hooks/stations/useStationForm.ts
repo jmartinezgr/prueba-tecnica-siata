@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 
-import { Station } from "@/types/stations";
+import {
+  onChangeStationFormDataFunct,
+  Station,
+  StationFormData,
+} from "@/types/stations";
 import { normalizeDateForInput } from "@/utils/date";
-
-type StationFormData = Omit<Station, "id">;
 
 interface FormErrors {
   [key: string]: string | null;
@@ -38,9 +40,10 @@ export const useStationForm = (stationData?: Station) => {
     setErrors({});
   }, [stationData]);
 
-  const handleInputChange = (
-    field: keyof StationFormData,
-    value: string | number | boolean
+  const handleInputChange: onChangeStationFormDataFunct = (
+    field,
+    // eslint-disable-next-line prettier/prettier
+    value
   ): void => {
     setFormData((prev) => ({
       ...prev,

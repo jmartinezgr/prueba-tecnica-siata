@@ -1,4 +1,3 @@
-// hooks/useStationsTable.ts
 import { useMemo, useState } from "react";
 
 import { Station } from "@/types/stations";
@@ -17,6 +16,7 @@ export function useStationsTable(stations: Station[]) {
         (s) =>
           s.name.toLowerCase().includes(filterValue.toLowerCase()) ||
           s.location.toLowerCase().includes(filterValue.toLowerCase()) ||
+          // eslint-disable-next-line prettier/prettier
           s.type.toLowerCase().includes(filterValue.toLowerCase())
       );
     }

@@ -29,7 +29,7 @@ import { Station } from "@/types/stations";
 import StatusChip from "@/components/stations/StatusChip";
 import TableFooter from "@/components/stations/TableFooter";
 import TableHeaderTools from "@/components/stations/TableHeaderTools";
-import { useStationsTable } from "@/hooks/useStationsTable";
+import { useStationsTable } from "@/hooks/stations/useStationsTable";
 import { fetchStations } from "@/services/stations";
 import StationModal from "@/components/stations/StationModal";
 
