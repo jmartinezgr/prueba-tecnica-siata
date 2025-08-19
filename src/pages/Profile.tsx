@@ -1,7 +1,7 @@
 import DefaultLayout from "@/layouts/default";
 import { useAuth } from "@/hooks/useAuth";
 import { useProfileForm } from "@/hooks/profile/useProfileForm";
-import { usePasswordVisibility } from "@/components/profile/usePasswordVisibility";
+import { usePasswordVisibility } from "@/hooks/profile/usePasswordVisibility";
 import { ProfileHeader } from "@/components/profile/ProfileHeader";
 import { PersonalInfoForm } from "@/components/profile/PersonalInfoForm";
 import { SecurityForm } from "@/components/profile/SecurityForm";
