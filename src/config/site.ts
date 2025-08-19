@@ -6,6 +6,7 @@ import NotFoundPage from "@/pages/NotFound";
 import RegisterPage from "@/pages/Register";
 import { RouteComponent } from "@/types/routes";
 import StationsPage from "@/pages/Stations";
+import ProfilePage from "@/pages/Profile";
 
 export const siteConfig = {
   name: "SIMET",
@@ -56,6 +57,11 @@ export const routesMap: RouteComponent[] = [
     pathName: "/not-found",
     isProtected: false,
     component: NotFoundPage,
+  },
+  {
+    pathName: "/perfil",
+    isProtected: true,
+    component: ProfilePage,
   },
   {
     pathName: "*",
