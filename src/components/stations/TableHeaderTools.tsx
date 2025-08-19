@@ -30,6 +30,7 @@ const TableHeaderTools: React.FC<TableHeaderToolsProps> = ({
         {/* Input de búsqueda - ancho completo en móvil */}
         <Input
           isClearable
+          aria-label="Buscar estación"
           className="w-full sm:flex-1 sm:max-w-lg"
           placeholder="Buscar estación..."
           size="sm"
@@ -43,6 +44,7 @@ const TableHeaderTools: React.FC<TableHeaderToolsProps> = ({
         <div className="flex gap-2 sm:gap-3">
           {/* Select de filtro */}
           <Select
+            aria-label="Filtrar por estado"
             className="w-2/3 sm:w-80"
             placeholder="Estado"
             selectedKeys={statusFilter === "all" ? [] : [statusFilter]}
