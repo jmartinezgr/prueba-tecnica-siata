@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { useState, useMemo } from "react";
 import {
   Table,
@@ -12,6 +13,7 @@ import {
   Card,
   CardBody,
   Skeleton,
+  addToast,
 } from "@heroui/react";
 import {
   IconEdit,
@@ -22,7 +24,7 @@ import {
   IconWifiOff,
   IconTool,
 } from "@tabler/icons-react";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import DefaultLayout from "@/layouts/default";
 import { Station } from "@/types/stations";
@@ -30,16 +32,33 @@ import StatusChip from "@/components/stations/StatusChip";
 import TableFooter from "@/components/stations/TableFooter";
 import TableHeaderTools from "@/components/stations/TableHeaderTools";
 import { useStationsTable } from "@/hooks/stations/useStationsTable";
-import { fetchStations } from "@/services/stations";
+import { deleteStation, fetchStations } from "@/services/stations";
 import StationModal from "@/components/stations/StationModal";
+import { useWarningModal } from "@/hooks/stations/useWarningModal";
+import WarningActionModal from "@/components/stations/WarningActionModal";
+import { formatDate } from "@/utils/date";
 
 // Tipos para TypeScript
 
 const StationsPage = () => {
+  const queryClient = useQueryClient();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [selectedStationId, setSelectedStationId] = useState<string | null>(
     null
   );
+  const [deleteStationId, setDeletionStationId] = useState<string | null>(null);
+
+  const deleteModal = useWarningModal();
+
+  const handleDeleteStationModal = () => {
+    deleteStationMutation.mutate(deleteStationId!);
+    deleteModal.closeModal();
+  };
+
+  const handleDeleteStation = (id: string) => {
+    setDeletionStationId(id);
+    deleteModal.openModal();
+  };
 
   const { data: stations = [] } = useQuery({
     queryKey: ["stations"],
@@ -48,6 +67,19 @@ const StationsPage = () => {
         return data;
       }),
     refetchOnWindowFocus: true,
+  });
+
+  const deleteStationMutation = useMutation({
+    mutationFn: deleteStation,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["stations"] });
+      addToast({
+        title: "Éxito",
+        description: `Estación ${deleteStationId} eliminada correctamente.`,
+        color: "success",
+      });
+      setDeletionStationId(null);
+    },
   });
 
   const handleModalClose = () => {
@@ -90,22 +122,6 @@ const StationsPage = () => {
   const handleEdit = (station: Station) => {
     setSelectedStationId(station.id);
     setIsModalOpen(true);
-  };
-
-  const handleDelete = async (stationId: string) => {
-    // TODO: Implementar confirmación y llamada a API
-    // setStations(stations.filter(s => s.id !== stationId));
-  };
-
-  // Formatear fecha
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleString("es-ES", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
   };
 
   // Top content con búsqueda y filtros
@@ -320,7 +336,7 @@ const StationsPage = () => {
                         color="danger"
                         size="sm"
                         variant="flat"
-                        onPress={() => handleDelete(item.id)}
+                        onPress={() => handleDeleteStation(item.id)}
                       >
                         <IconTrash size={16} />
                       </Button>
@@ -336,6 +352,19 @@ const StationsPage = () => {
         isOpen={isModalOpen}
         stationId={selectedStationId}
         onClose={handleModalClose}
+      />
+      <WarningActionModal
+        body={`¿Estás seguro de que deseas eliminar la estacion ${deleteStationId}? Todos sus datos se perderán permanentemente y no podrás recuperar esta información."`}
+        cancelText="Cancelar"
+        confirmColor="danger"
+        confirmText="Sí, eliminar"
+        icon={<IconTrash className="text-danger" size={32} />}
+        isLoading={deleteStationMutation.isPending}
+        isOpen={deleteModal.isOpen}
+        subtitle="Esta acción no se puede deshacer"
+        title="Eliminar Usuario"
+        onClose={deleteModal.closeModal}
+        onConfirm={handleDeleteStationModal}
       />
     </DefaultLayout>
   );

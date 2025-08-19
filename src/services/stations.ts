@@ -33,3 +33,7 @@ export const updateStation = async ({
 
   return response.data;
 };
+
+export const deleteStation = async (id: string): Promise<void> => {
+  await api.delete(`/${id}`);
+};
