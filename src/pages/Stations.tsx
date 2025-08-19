@@ -31,11 +31,22 @@ import TableFooter from "@/components/stations/TableFooter";
 import TableHeaderTools from "@/components/stations/TableHeaderTools";
 import { useStationsTable } from "@/hooks/useStationsTable";
 import { fetchStations } from "@/services/stations";
+import StationModal from "@/components/stations/StationModal";
 
 // Tipos para TypeScript
 
 const StationsPage = () => {
   const [stations, setStations] = useState<Station[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [selectedStationId, setSelectedStationId] = useState<string | null>(
+    null
+  );
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    setSelectedStationId(null);
+  };
+
   const {
     filterValue,
     setFilterValue,
@@ -48,7 +59,7 @@ const StationsPage = () => {
     filteredItems,
   } = useStationsTable(stations);
 
-  const stationsQuery = useQuery({
+  useQuery({
     queryKey: ["stations"],
     queryFn: () =>
       fetchStations().then((data) => {
@@ -76,18 +87,16 @@ const StationsPage = () => {
 
   // Funciones para acciones CRUD (placeholder)
   const handleAdd = () => {
-    // TODO: Abrir modal de agregar estación
-    console.log("Add station");
+    setIsModalOpen(true);
   };
 
   const handleEdit = (station: Station) => {
-    // TODO: Abrir modal de editar estación
-    console.log("Edit station:", station);
+    setSelectedStationId(station.id);
+    setIsModalOpen(true);
   };
 
   const handleDelete = async (stationId: string) => {
     // TODO: Implementar confirmación y llamada a API
-    console.log("Delete station:", stationId);
     // setStations(stations.filter(s => s.id !== stationId));
   };
 
@@ -326,6 +335,11 @@ const StationsPage = () => {
           </TableBody>
         </Table>
       </div>
+      <StationModal
+        isOpen={isModalOpen}
+        stationId={selectedStationId}
+        onClose={handleModalClose}
+      />
     </DefaultLayout>
   );
 };
