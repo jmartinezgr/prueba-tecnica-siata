@@ -26,53 +26,65 @@ const TableHeaderTools: React.FC<TableHeaderToolsProps> = ({
   return (
     <div className="flex flex-col gap-4">
       {/* Fila superior con búsqueda, select y botón */}
-      <div className="flex justify-between gap-3 items-end">
+      <div className="flex flex-col sm:flex-row gap-3 sm:gap-3 sm:justify-between">
+        {/* Input de búsqueda - ancho completo en móvil */}
         <Input
           isClearable
-          className="w-full sm:max-w-[44%]"
-          placeholder="Buscar por nombre, ubicación o tipo..."
-          startContent={<IconSearch size={18} />}
+          className="w-full sm:flex-1 sm:max-w-lg"
+          placeholder="Buscar estación..."
+          size="sm"
+          startContent={<IconSearch size={16} />}
           value={filterValue}
           onClear={onClear}
           onValueChange={onSearchChange}
         />
 
-        <Select
-          className="max-w-xs"
-          placeholder="Todos los estados"
-          selectedKeys={statusFilter === "all" ? [] : [statusFilter]}
-          onSelectionChange={(keys) => {
-            const selected = Array.from(keys)[0] as string;
+        {/* Contenedor para Select y Botón */}
+        <div className="flex gap-2 sm:gap-3">
+          {/* Select de filtro */}
+          <Select
+            className="w-2/3 sm:w-80"
+            placeholder="Estado"
+            selectedKeys={statusFilter === "all" ? [] : [statusFilter]}
+            size="sm"
+            onSelectionChange={(keys) => {
+              const selected = Array.from(keys)[0] as string;
 
-            setStatusFilter(selected || "all");
-          }}
-        >
-          <SelectItem key="all">Todos</SelectItem>
-          <SelectItem key="active">Activo</SelectItem>
-          <SelectItem key="inactive">Inactivo</SelectItem>
-          <SelectItem key="maintenance">Mantenimiento</SelectItem>
-        </Select>
-        <Button
-          color="primary"
-          size="md"
-          startContent={<IconPlus size={10} />}
-          onPress={handleAdd}
-        >
-          Agregar Estación
-        </Button>
+              setStatusFilter(selected || "all");
+            }}
+          >
+            <SelectItem key="all">Todos</SelectItem>
+            <SelectItem key="active">Activo</SelectItem>
+            <SelectItem key="inactive">Inactivo</SelectItem>
+            <SelectItem key="maintenance">Mantenimiento</SelectItem>
+          </Select>
+
+          {/* Botón Agregar */}
+          <Button
+            className="whitespace-nowrap"
+            color="primary"
+            size="sm"
+            startContent={<IconPlus size={16} />}
+            onPress={handleAdd}
+          >
+            <span className="hidden sm:inline">Agregar Estación</span>
+            <span className="sm:hidden">Agregar</span>
+          </Button>
+        </div>
       </div>
 
       {/* Fila inferior con total y filas por página */}
-      <div className="flex justify-between items-center">
-        <span className="text-default-400 text-small">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+        <span className="text-default-400 text-xs sm:text-small">
           Total {stationsCount} estaciones
         </span>
 
-        <label className="flex items-center text-default-400 text-small">
-          Filas por página:
+        <label className="flex items-center text-default-400 text-xs sm:text-small">
+          <span className="hidden sm:inline">Filas por página:</span>
+          <span className="sm:hidden">Mostrar:</span>
           <select
-            className="bg-transparent outline-none text-default-400 text-small ml-2"
-            onChange={() => setPage(1)} // ⚠️ aquí seguro luego quieres actualizar el límite también
+            className="bg-transparent outline-none text-default-400 text-xs sm:text-small ml-2 border border-default-200 rounded px-2 py-1"
+            onChange={() => setPage(1)}
           >
             <option value="5">5</option>
             <option value="10">10</option>
