@@ -1,9 +1,20 @@
 import React, { createContext, useReducer } from "react";
-import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
+import {
+  QueryClient,
+  useMutation,
+  useQuery,
+  UseMutationResult,
+} from "@tanstack/react-query";
 
 import { authReducer, initialAuthState } from "@/providers/auth/AuthReducer";
 import { UserType } from "@/types/auth";
-import { getCurrentUser, login, logout, register } from "@/services/auth";
+import {
+  getCurrentUser,
+  login,
+  logout,
+  register,
+  updateUser,
+} from "@/services/auth";
 
 interface IAuthContextProps {
   children: React.ReactNode;
@@ -19,7 +30,16 @@ type AuthContextType = {
   login: (user: { email: string; password: string }) => void;
   register: (user: UserType) => void;
   logout: () => void;
-  updateUser: (data: Partial<UserType>) => void;
+  updateUser: (data: UserType) => void;
+  loginMutation: UseMutationResult<
+    UserType,
+    Error,
+    { email: string; password: string },
+    unknown
+  >;
+  registerMutation: UseMutationResult<UserType, Error, UserType, unknown>;
+  logoutMutation: UseMutationResult<void, Error, void, unknown>;
+  updateUserMutation: UseMutationResult<UserType, Error, UserType, unknown>;
 };
 
 export const AuthContext = createContext<AuthContextType | null>(null);
@@ -67,8 +87,10 @@ export const AuthenticationProvider: React.FC<IAuthContextProps> = ({
     },
   });
 
-  const logoutMutation = useMutation({
-    mutationFn: logout,
+  const logoutMutation = useMutation<void, Error, void>({
+    mutationFn: async () => {
+      await logout();
+    },
     onSuccess: () => {
       dispatch({ type: "LOGOUT" });
       navigate("/");
@@ -83,9 +105,12 @@ export const AuthenticationProvider: React.FC<IAuthContextProps> = ({
     },
   });
 
-  const updateUser = (data: Partial<UserType>) => {
-    dispatch({ type: "UPDATE", payload: data });
-  };
+  const updateUserMutation = useMutation({
+    mutationFn: (userData: UserType) => updateUser(userData),
+    onSuccess: () => {
+      userInfoQuery.refetch();
+    },
+  });
 
   return (
     <AuthContext.Provider
@@ -97,7 +122,11 @@ export const AuthenticationProvider: React.FC<IAuthContextProps> = ({
         login: loginMutation.mutate,
         register: registerMutation.mutate,
         logout: logoutMutation.mutate,
-        updateUser,
+        updateUser: updateUserMutation.mutate,
+        loginMutation,
+        registerMutation,
+        logoutMutation,
+        updateUserMutation,
       }}
     >
       {children}
