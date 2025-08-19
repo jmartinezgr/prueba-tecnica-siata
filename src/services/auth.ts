@@ -81,3 +81,17 @@ export async function getCurrentUser(): Promise<UserType> {
   //TODO : usar try
   return JSON.parse(user);
 }
+
+export async function updateUser(user: UserType): Promise<UserType> {
+  const users = getUsers();
+
+  if (!users[user.email]) {
+    throw new Error("Usuario no encontrado");
+  }
+
+  users[user.email] = user;
+  saveUsers(users);
+  localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
+
+  return user;
+}
