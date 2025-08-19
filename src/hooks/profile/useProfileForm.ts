@@ -3,10 +3,12 @@ import { useState, useCallback } from "react";
 import { addToast } from "@heroui/react";
 
 import { useAuth } from "@/hooks/useAuth";
+import { useFormValidation } from "@/hooks/useFormValidation";
 import { FormData, FormErrors } from "@/types/profile";
 
 export const useProfileForm = () => {
   const { user, updateUser, updateUserMutation } = useAuth();
+  const { validateField, validationRules } = useFormValidation();
 
   const [formData, setFormData] = useState<FormData>({
     firstName: user?.firstName || "",
@@ -20,73 +22,57 @@ export const useProfileForm = () => {
   const [errors, setErrors] = useState<FormErrors>({});
   const [touched, setTouched] = useState<Record<string, boolean>>({});
 
-  const validateField = useCallback(
+  const validateProfileField = useCallback(
     (field: string, value: string, formData: FormData): string | undefined => {
       const isPasswordSectionUsed =
-        formData.currentPassword ||
-        formData.newPassword ||
-        formData.confirmPassword;
+        formData.currentPassword != "" ||
+        formData.newPassword != "" ||
+        formData.confirmPassword != "";
 
-      switch (field) {
-        case "firstName":
-          if (!value.trim()) return "El nombre es requerido";
-          if (value.length < 2)
-            return "El nombre debe tener al menos 2 caracteres";
-          if (value.length > 50)
-            return "El nombre no puede exceder 50 caracteres";
-          if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(value))
-            return "El nombre solo puede contener letras";
-          break;
+      // Reglas base de validación
+      let rules = validationRules[field as keyof typeof validationRules];
 
-        case "lastName":
-          if (!value.trim()) return "El apellido es requerido";
-          if (value.length < 2)
-            return "El apellido debe tener al menos 2 caracteres";
-          if (value.length > 50)
-            return "El apellido no puede exceder 50 caracteres";
-          if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(value))
-            return "El apellido solo puede contener letras";
-          break;
+      // Ajustar reglas para campos de contraseña condicionalmente
+      if (field === "currentPassword") {
+        rules = {
+          ...rules,
+          required: isPasswordSectionUsed,
+          customValidation:
+            isPasswordSectionUsed && formData.currentPassword
+              ? (value: string) => {
+                  if (!value) {
+                    return "La contraseña actual es requerida para cambiar la contraseña";
+                  }
 
-        case "email":
-          if (!value.trim()) return "El correo es requerido";
-          if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value))
-            return "Formato de correo inválido";
-          break;
+                  return undefined;
+                }
+              : undefined,
+        };
+      } else if (field === "newPassword") {
+        rules = {
+          ...validationRules.newPassword,
+          required: isPasswordSectionUsed,
+        };
+      } else if (field === "confirmPassword") {
+        rules = {
+          ...validationRules.confirmPassword,
+          required: isPasswordSectionUsed,
+          customValidation:
+            isPasswordSectionUsed && formData.newPassword
+              ? (value: string) => {
+                  if (value !== formData.newPassword) {
+                    return "Las contraseñas no coinciden";
+                  }
 
-        case "currentPassword":
-          if (isPasswordSectionUsed && !value)
-            return "La contraseña actual es requerida para cambiar la contraseña";
-          break;
-
-        case "newPassword":
-          if (isPasswordSectionUsed) {
-            if (!value) return "La nueva contraseña es requerida";
-            if (value.length < 8)
-              return "La contraseña debe tener al menos 8 caracteres";
-            if (value.length > 100)
-              return "La contraseña no puede exceder 100 caracteres";
-            if (!/(?=.*[a-z])/.test(value))
-              return "La contraseña debe contener al menos una letra minúscula";
-            if (!/(?=.*[A-Z])/.test(value))
-              return "La contraseña debe contener al menos una letra mayúscula";
-            if (!/(?=.*\d)/.test(value))
-              return "La contraseña debe contener al menos un número";
-          }
-          break;
-
-        case "confirmPassword":
-          if (isPasswordSectionUsed) {
-            if (!value) return "Confirme la nueva contraseña";
-            if (value !== formData.newPassword)
-              return "Las contraseñas no coinciden";
-          }
-          break;
+                  return undefined;
+                }
+              : undefined,
+        };
       }
 
-      return undefined;
+      return validateField(field, value, rules, formData);
     },
-    []
+    [validateField, validationRules]
   );
 
   const handleInputChange = useCallback(
@@ -95,13 +81,13 @@ export const useProfileForm = () => {
         const newData = { ...prev, [field]: value };
 
         // Validar el campo actual
-        const error = validateField(field, value, newData);
+        const error = validateProfileField(field, value, newData);
 
         setErrors((prev) => ({ ...prev, [field]: error }));
 
         // Revalidar confirmPassword si estamos cambiando newPassword
         if (field === "newPassword" && touched.confirmPassword) {
-          const confirmError = validateField(
+          const confirmError = validateProfileField(
             "confirmPassword",
             prev.confirmPassword,
             newData
@@ -112,10 +98,11 @@ export const useProfileForm = () => {
 
         // Revalidar si estamos cambiando confirmPassword
         if (field === "confirmPassword") {
-          const confirmError =
-            value !== newData.newPassword
-              ? "Las contraseñas no coinciden"
-              : undefined;
+          const confirmError = validateProfileField(
+            "confirmPassword",
+            value,
+            newData
+          );
 
           setErrors((prev) => ({ ...prev, confirmPassword: confirmError }));
         }
@@ -123,13 +110,13 @@ export const useProfileForm = () => {
         return newData;
       });
     },
-    [validateField, touched.confirmPassword]
+    [validateProfileField, touched.confirmPassword]
   );
 
   const handleBlur = useCallback(
     (field: string) => {
       setTouched((prev) => ({ ...prev, [field]: true }));
-      const error = validateField(
+      const error = validateProfileField(
         field,
         formData[field as keyof FormData],
         formData
@@ -137,14 +124,14 @@ export const useProfileForm = () => {
 
       setErrors((prev) => ({ ...prev, [field]: error }));
     },
-    [formData, validateField]
+    [formData, validateProfileField]
   );
 
   const validateAllFields = useCallback((): boolean => {
     const newErrors: FormErrors = {};
     let isValid = true;
 
-    const fieldsToValidate = ["firstName", "lastName"];
+    const fieldsToValidate = ["firstName", "lastName", "email"];
     const isPasswordSectionUsed =
       formData.currentPassword ||
       formData.newPassword ||
@@ -159,7 +146,7 @@ export const useProfileForm = () => {
     }
 
     fieldsToValidate.forEach((field) => {
-      const error = validateField(
+      const error = validateProfileField(
         field,
         formData[field as keyof FormData],
         formData
@@ -167,14 +154,14 @@ export const useProfileForm = () => {
 
       if (error) {
         newErrors[field as keyof FormErrors] = error;
-        isValid = false; // Aquí está la corrección - se mantiene como boolean
+        isValid = false;
       }
     });
 
     setErrors(newErrors);
 
-    return isValid; // Retorna correctamente un boolean
-  }, [formData, validateField]);
+    return isValid;
+  }, [formData, validateProfileField]);
 
   const handleSubmit = useCallback(async () => {
     const allFields = ["firstName", "lastName", "email"];
