@@ -17,3 +17,14 @@ export const normalizeDateForInput = (value: string): string => {
 
   return `${year}-${month}-${day}T${hours}:${minutes}`;
 };
+
+// Formatear fecha
+export const formatDate = (dateString: string) => {
+  return new Date(dateString).toLocaleString("es-ES", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+};
