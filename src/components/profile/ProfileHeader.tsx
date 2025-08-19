@@ -16,7 +16,7 @@ export const ProfileHeader = ({ userEmail }: ProfileHeaderProps) => {
             className="ring-2 ring-primary-200"
             color="primary"
             size="lg"
-            src="https://i.pravatar.cc/150?img=44"
+            src={`https://api.dicebear.com/7.x/initials/svg?seed=${userEmail}`}
           />
           <div className="flex-1 text-center sm:text-left">
             <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-1">

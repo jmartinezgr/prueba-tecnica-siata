@@ -5,7 +5,7 @@ import { siteConfig } from "@/config/site";
 
 const AuthInfoPanel = ({ title, subtitle, descList }: AuthInfoPanelProps) => {
   return (
-    <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br  from-[#b249f8] via-[#d27cf9] to-[#FF1CF7]  relative overflow-hidden">
+    <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br  from-[#006FEE] via-[#3399FF] to-[#66CCFF]  relative overflow-hidden">
       <div className="relative z-10 p-12 text-white flex flex-col justify-center">
         {/* Titulos */}
         <div className="mb-8">

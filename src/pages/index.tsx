@@ -26,7 +26,7 @@ export default function IndexPage() {
 
           <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl">
             <span className={title({ size: "sm" })}>Estaciones&nbsp;</span>
-            <span className={title({ color: "violet", size: "sm" })}>
+            <span className={title({ color: "blue", size: "sm" })}>
               Meteorológicas&nbsp;
             </span>
             <br />

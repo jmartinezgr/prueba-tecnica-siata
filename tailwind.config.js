@@ -9,24 +9,7 @@ export default {
   theme: {
     extend: {},
   },
-  darkMode: false, // desactivado para usar solo light
-  safelist: [
-    "bg-primary",
-    "text-primary-foreground",
-    "hover:bg-primary-600",
-    "bg-secondary",
-    "text-secondary-foreground",
-    "hover:bg-secondary-600",
-    "bg-success",
-    "text-success-foreground",
-    "hover:bg-success-600",
-    "bg-warning",
-    "text-warning-foreground",
-    "hover:bg-warning-600",
-    "bg-danger",
-    "text-danger-foreground",
-    "hover:bg-danger-600",
-  ],
+  darkMode: false,
   plugins: [
     heroui({
       themes: {
