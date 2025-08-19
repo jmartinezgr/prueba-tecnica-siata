@@ -22,6 +22,7 @@ import {
   IconWifiOff,
   IconTool,
 } from "@tabler/icons-react";
+import { useQuery } from "@tanstack/react-query";
 
 import DefaultLayout from "@/layouts/default";
 import { Station } from "@/types/stations";
@@ -29,49 +30,12 @@ import StatusChip from "@/components/stations/StatusChip";
 import TableFooter from "@/components/stations/TableFooter";
 import TableHeaderTools from "@/components/stations/TableHeaderTools";
 import { useStationsTable } from "@/hooks/useStationsTable";
+import { fetchStations } from "@/services/stations";
 
 // Tipos para TypeScript
 
-// Datos de ejemplo (reemplazar con llamada a API)
-const mockStations: Station[] = [
-  {
-    id: "1",
-    name: "Central Park Station",
-    location: "New York",
-    status: "active",
-    latitude: 40.7829,
-    longitude: -73.9654,
-    type: "urban",
-    last_answer: "2025-08-18T14:30",
-    temp: 24,
-  },
-  {
-    id: "2",
-    name: "Mountain View Station",
-    location: "Colorado",
-    status: "inactive",
-    latitude: 39.7392,
-    longitude: -104.9903,
-    type: "mountain",
-    last_answer: "2025-08-18T10:15",
-    temp: 18,
-  },
-  {
-    id: "3",
-    name: "Coastal Monitor",
-    location: "California",
-    status: "maintenance",
-    latitude: 34.0522,
-    longitude: -118.2437,
-    type: "coastal",
-    last_answer: "2025-08-17T22:45",
-    temp: 26,
-  },
-  // Agregar más datos de ejemplo si necesitas
-];
-
 const StationsPage = () => {
-  const [stations, setStations] = useState<Station[]>(mockStations);
+  const [stations, setStations] = useState<Station[]>([]);
   const {
     filterValue,
     setFilterValue,
@@ -84,21 +48,18 @@ const StationsPage = () => {
     filteredItems,
   } = useStationsTable(stations);
 
-  // Función para obtener datos de la API (placeholder)
-  const fetchStations = async () => {
-    try {
-      // TODO: Reemplazar con llamada real a la API
-      // const response = await fetch('/api/stations');
-      // const data = await response.json();
-      // setStations(data);
+  const stationsQuery = useQuery({
+    queryKey: ["stations"],
+    queryFn: () =>
+      fetchStations().then((data) => {
+        console.log(data);
+        setStations(data);
 
-      // Simulación de carga
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-    } catch (error) {
-      console.error("Error fetching stations:", error);
-    } finally {
-    }
-  };
+        return data;
+      }),
+
+    refetchOnWindowFocus: true,
+  });
 
   // Función para manejar búsqueda
   const onSearchChange = (value?: string) => {

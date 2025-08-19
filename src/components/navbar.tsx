@@ -28,7 +28,7 @@ export const Navbar = () => {
   const navigate = useNavigate();
 
   return (
-    <HeroUINavbar maxWidth="2xl" position="sticky">
+    <HeroUINavbar isBordered maxWidth="2xl" position="sticky">
       <NavbarBrand className="gap-3 max-w-fit">
         <Link
           className="flex justify-start items-center gap-1"
