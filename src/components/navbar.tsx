@@ -51,7 +51,7 @@ export const Navbar = () => {
           href="/"
         >
           <Logo className="text-primary" />
-          <p className="font-bold text-inherit bg-gradient-to-r from-primary to-secondary bg-clip-text">
+          <p className="font-bold text-inherit bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
             {siteConfig.name}
           </p>
         </Link>
@@ -151,7 +151,7 @@ export const Navbar = () => {
               <Button
                 className="hidden lg:flex"
                 color="primary"
-                size="sm"
+                size="md"
                 variant="ghost"
                 onPress={() => navigate("/login")}
               >
@@ -162,7 +162,7 @@ export const Navbar = () => {
               <Button
                 className="hidden lg:flex"
                 color="primary"
-                size="sm"
+                size="md"
                 variant="ghost"
                 onPress={() => navigate("/register")}
               >

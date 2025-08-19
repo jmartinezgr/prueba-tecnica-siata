@@ -88,6 +88,12 @@ export default function IndexPage() {
             size="md"
             startContent={<GithubIcon size={18} />}
             variant="bordered"
+            onPress={() =>
+              window.open(
+                "https://github.com/jmartinezgr/prueba-tecnica-siata",
+                "_blank"
+              )
+            }
           >
             Código Fuente
           </Button>
