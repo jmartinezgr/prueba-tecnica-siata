@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import React, { useEffect } from "react";
 import {
   Modal,
@@ -8,41 +7,53 @@ import {
   ModalFooter,
   Button,
   Spinner,
+  addToast,
 } from "@heroui/react";
 import { IconDeviceDesktop } from "@tabler/icons-react";
+import { useMutation } from "@tanstack/react-query";
 
 import { StationFormFields } from "./StationFormFields";
 
 import { useStationForm } from "@/hooks/stations/useStationForm";
 import { useStationModal } from "@/hooks/stations/useStationModal";
 import { useStatusHandler } from "@/hooks/stations/useStatusHandler";
-import { Station } from "@/types/stations";
-
-type StationFormData = Omit<Station, "id">;
+import { createStation } from "@/services/stations";
 
 interface StationModalProps {
   isOpen: boolean;
   onClose: () => void;
   stationId?: string | null;
-  onSave?: (stationData: StationFormData) => Promise<void>;
-  onUpdate?: (
-    stationId: string,
-    stationData: Partial<Station>
-  ) => Promise<void>;
 }
 
 const StationModal: React.FC<StationModalProps> = ({
   isOpen,
   onClose,
   stationId = null,
-  onSave,
-  onUpdate,
 }) => {
+  const createMutation = useMutation({
+    mutationFn: createStation,
+    onSuccess: () => {
+      addToast({
+        title: "Éxito",
+        description: `Estación creada correctamente.`,
+        color: "success",
+      });
+      onClose();
+    },
+    onError: (error) => {
+      console.log(error);
+      addToast({
+        title: "Error",
+        description: `No se pudo crear la estación. ${error.message}`,
+        color: "danger",
+      });
+    },
+  });
+
   const { saving, stationQuery, handleSave } = useStationModal({
     stationId,
-    onSave,
-    onUpdate,
     onClose,
+    onSave: createMutation.mutateAsync,
   });
 
   const { formData, errors, handleInputChange, validateForm, resetForm } =

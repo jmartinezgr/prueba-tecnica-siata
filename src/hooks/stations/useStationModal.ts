@@ -7,11 +7,11 @@ import { fetchStationInfo } from "@/services/stations";
 
 interface UseStationModalProps {
   stationId?: string | null;
-  onSave?: (stationData: StationFormData) => Promise<void>;
+  onSave?: (stationData: StationFormData) => Promise<unknown>; // antes Promise<void>
   onUpdate?: (
     stationId: string,
     stationData: Partial<Station>
-  ) => Promise<void>;
+  ) => Promise<unknown>; // igual aquí
   onClose: () => void;
 }
 
@@ -19,7 +19,6 @@ export const useStationModal = ({
   stationId,
   onSave,
   onUpdate,
-  onClose,
 }: UseStationModalProps) => {
   const [saving, setSaving] = useState<boolean>(false);
 
@@ -36,18 +35,12 @@ export const useStationModal = ({
     if (!validateForm()) return;
 
     setSaving(true);
-    try {
-      if (stationId && onUpdate) {
-        await onUpdate(stationId, formData);
-      } else if (onSave) {
-        await onSave(formData);
-      }
-      onClose();
-    } catch (error) {
-      console.error("Error saving station:", error);
-    } finally {
-      setSaving(false);
+    if (stationId && onUpdate) {
+      await onUpdate(stationId, formData);
+    } else if (onSave) {
+      await onSave(formData);
     }
+    setSaving(false);
   };
 
   return {

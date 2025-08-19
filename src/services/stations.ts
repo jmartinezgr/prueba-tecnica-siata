@@ -1,5 +1,5 @@
 import api from "@/services";
-import { Station } from "@/types/stations";
+import { Station, StationFormData } from "@/types/stations";
 
 export const fetchStations = async (): Promise<Station[]> => {
   const response = await api.get("/");
@@ -9,6 +9,14 @@ export const fetchStations = async (): Promise<Station[]> => {
 
 export const fetchStationInfo = async (id: string): Promise<Station> => {
   const response = await api.get(`/${id}`);
+
+  return response.data;
+};
+
+export const createStation = async (
+  formData: StationFormData
+): Promise<Station> => {
+  const response = await api.post("/", formData);
 
   return response.data;
 };
