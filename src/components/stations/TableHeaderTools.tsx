@@ -1,5 +1,5 @@
-import { Input, Select, SelectItem, Button } from "@heroui/react";
-import { IconSearch, IconPlus } from "@tabler/icons-react";
+import { Button, Input, Select, SelectItem } from "@heroui/react";
+import { IconPlus, IconSearch } from "@tabler/icons-react";
 import React from "react";
 
 interface TableHeaderToolsProps {
@@ -37,33 +37,29 @@ const TableHeaderTools: React.FC<TableHeaderToolsProps> = ({
           onValueChange={onSearchChange}
         />
 
-        <div className="flex gap-3">
-          <Select
-            className="max-w-xs"
-            label="Estado"
-            placeholder="Todos los estados"
-            selectedKeys={statusFilter === "all" ? [] : [statusFilter]}
-            onSelectionChange={(keys) => {
-              const selected = Array.from(keys)[0] as string;
+        <Select
+          className="max-w-xs"
+          placeholder="Todos los estados"
+          selectedKeys={statusFilter === "all" ? [] : [statusFilter]}
+          onSelectionChange={(keys) => {
+            const selected = Array.from(keys)[0] as string;
 
-              setStatusFilter(selected || "all");
-            }}
-          >
-            <SelectItem key="all">Todos</SelectItem>
-            <SelectItem key="active">Activo</SelectItem>
-            <SelectItem key="inactive">Inactivo</SelectItem>
-            <SelectItem key="maintenance">Mantenimiento</SelectItem>
-          </Select>
-
-          <Button
-            color="primary"
-            size="lg"
-            startContent={<IconPlus size={18} />}
-            onPress={handleAdd}
-          >
-            Agregar Estación
-          </Button>
-        </div>
+            setStatusFilter(selected || "all");
+          }}
+        >
+          <SelectItem key="all">Todos</SelectItem>
+          <SelectItem key="active">Activo</SelectItem>
+          <SelectItem key="inactive">Inactivo</SelectItem>
+          <SelectItem key="maintenance">Mantenimiento</SelectItem>
+        </Select>
+        <Button
+          color="primary"
+          size="md"
+          startContent={<IconPlus size={10} />}
+          onPress={handleAdd}
+        >
+          Agregar Estación
+        </Button>
       </div>
 
       {/* Fila inferior con total y filas por página */}

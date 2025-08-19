@@ -52,12 +52,10 @@ const StationsPage = () => {
     queryKey: ["stations"],
     queryFn: () =>
       fetchStations().then((data) => {
-        console.log(data);
         setStations(data);
 
         return data;
       }),
-
     refetchOnWindowFocus: true,
   });
 
