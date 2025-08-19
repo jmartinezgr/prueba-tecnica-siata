@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 // In this file will be use LocalStorage instead of API calls
 // This is a requirement required for this techincal test
 
@@ -29,57 +30,24 @@ function saveUsers(users: Record<string, UserType>) {
 
 // ================== AUTH METHODS ==================
 
-export async function register(user: UserType) {
-  const users = getUsers();
-
-  if (users[user.email]) {
-    throw new Error("El usuario ya existe");
-  }
-
-  users[user.email] = user;
-  saveUsers(users);
-  localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
-
-  return user;
-}
-
 export async function login(email: string, password: string) {
-  const users = getUsers();
+  try {
+    const users = getUsers();
+    const user = users[email];
 
-  const user = users[email];
+    if (!user || user.password !== password) {
+      throw new Error("Credenciales incorrectas");
+    }
 
-  if (!user) {
-    throw new Error("Usuario no encontrado");
+    localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
+
+    return user;
+  } catch {
+    throw new Error("No se pudo iniciar sesión. Intente nuevamente luego.");
   }
-
-  if (user.password !== password) {
-    throw new Error("Contraseña incorrecta");
-  }
-
-  // guardar usuario actual logueado
-  localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
-
-  return user;
 }
-
 export async function logout() {
   localStorage.removeItem(CURRENT_USER_KEY);
-
-  // eliminar cookie
-  document.cookie = "user=; path=/; max-age=0";
-
-  return true;
-}
-
-export async function getCurrentUser(): Promise<UserType> {
-  const user = localStorage.getItem(CURRENT_USER_KEY);
-
-  if (!user) {
-    throw new Error("No hay usuario logueado");
-  }
-
-  //TODO : usar try
-  return JSON.parse(user);
 }
 
 export async function updateUser(user: UserType): Promise<UserType> {
@@ -94,4 +62,36 @@ export async function updateUser(user: UserType): Promise<UserType> {
   localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
 
   return user;
+}
+
+export async function register(user: UserType) {
+  try {
+    const users = getUsers();
+
+    if (users[user.email]) {
+      throw new Error("El usuario ya existe");
+    }
+
+    users[user.email] = user;
+    saveUsers(users);
+    localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
+
+    return user;
+  } catch {
+    throw new Error("No se pudo registrar el usuario. Intente nuevamente.");
+  }
+}
+
+export async function getCurrentUser(): Promise<UserType> {
+  try {
+    const user = localStorage.getItem(CURRENT_USER_KEY);
+
+    if (!user) throw new Error("No hay usuario logueado");
+
+    return JSON.parse(user);
+  } catch {
+    throw new Error(
+      "No se pudo recuperar la sesión. Inicie sesión nuevamente luego."
+    );
+  }
 }

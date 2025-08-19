@@ -26,22 +26,13 @@ const authInfoPanelItems: AuthInfoPanelListItem[] = [
 ];
 
 const LoginPage = () => {
-  const { login } = useAuth();
+  const { login, loginMutation } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
 
   const handleLogin = async () => {
-    setIsLoading(true);
-
-    try {
-      await login({ email, password });
-    } catch (error) {
-      console.log("Error during login:", error);
-    } finally {
-      setIsLoading(false);
-    }
+    await login({ email, password });
   };
 
   return (
@@ -112,12 +103,14 @@ const LoginPage = () => {
         <div className="text-center">
           <Button
             className="w-full bg-slate-800 text-white hover:bg-slate-700 font-semibold transition-colors duration-200 mb-3"
-            isLoading={isLoading}
+            isLoading={loginMutation.isPending}
             size="lg"
-            startContent={!isLoading && <IconShieldCheck />}
+            startContent={!loginMutation.isPending && <IconShieldCheck />}
             onPress={handleLogin}
           >
-            {isLoading ? "Verificando credenciales..." : "Acceder al Sistema"}
+            {loginMutation.isPending
+              ? "Verificando credenciales..."
+              : "Acceder al Sistema"}
           </Button>
           <span className="text-slate-600 text-sm">
             ¿No tienes una cuenta?{" "}

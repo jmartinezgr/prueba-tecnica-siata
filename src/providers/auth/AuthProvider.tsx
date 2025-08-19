@@ -5,6 +5,7 @@ import {
   useQuery,
   UseMutationResult,
 } from "@tanstack/react-query";
+import { addToast } from "@heroui/react";
 
 import { authReducer, initialAuthState } from "@/providers/auth/AuthReducer";
 import { UserType } from "@/types/auth";
@@ -85,6 +86,13 @@ export const AuthenticationProvider: React.FC<IAuthContextProps> = ({
     onSuccess: () => {
       userInfoQuery.refetch();
     },
+    onError: (error: Error) => {
+      addToast({
+        title: "Error",
+        description: error.message,
+        color: "danger",
+      });
+    },
   });
 
   const logoutMutation = useMutation<void, Error, void>({
@@ -102,6 +110,13 @@ export const AuthenticationProvider: React.FC<IAuthContextProps> = ({
     mutationFn: (registerData: UserType) => register(registerData),
     onSuccess: () => {
       userInfoQuery.refetch();
+    },
+    onError: (error: Error) => {
+      addToast({
+        title: "Error",
+        description: error.message,
+        color: "danger",
+      });
     },
   });
 
