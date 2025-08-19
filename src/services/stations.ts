@@ -6,3 +6,9 @@ export const fetchStations = async (): Promise<Station[]> => {
 
   return response.data;
 };
+
+export const fetchStationInfo = async (id: string): Promise<Station> => {
+  const response = await api.get(`/${id}`);
+
+  return response.data;
+};
