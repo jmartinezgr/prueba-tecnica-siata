@@ -3,9 +3,7 @@ import { heroui } from "@heroui/react";
 export default {
   content: [
     "./index.html",
-    "./src/layouts/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/**/*.{js,ts,jsx,tsx,mdx}",
     "./node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
@@ -13,12 +11,21 @@ export default {
   },
   darkMode: false, // desactivado para usar solo light
   safelist: [
-    // Safelist para todos los colores principales de Heroui usando pattern
-    {
-      pattern:
-        /(bg|text)-(primary|secondary|success|warning|danger)(-\d{2,3})?/,
-    },
-    "hover:bg-primary-600", // ejemplo de hover
+    "bg-primary",
+    "text-primary-foreground",
+    "hover:bg-primary-600",
+    "bg-secondary",
+    "text-secondary-foreground",
+    "hover:bg-secondary-600",
+    "bg-success",
+    "text-success-foreground",
+    "hover:bg-success-600",
+    "bg-warning",
+    "text-warning-foreground",
+    "hover:bg-warning-600",
+    "bg-danger",
+    "text-danger-foreground",
+    "hover:bg-danger-600",
   ],
   plugins: [
     heroui({
